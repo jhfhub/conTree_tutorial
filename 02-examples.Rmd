@@ -1,0 +1,633 @@
+# Examples
+
+Here we provide examples of using different aspects of the `conTree`
+package as applied to several data sets. These examples are intended to
+illustrate some of the basic features, operation and control of the
+package procedures. See the full documentation for more advanced
+options. In this note lines beginning with " $>$ " are to be interpreted
+as R commands.
+
+## Conditional probability estimation
+
+
+Here we present R code and resulting output using `conTree` for the
+analysis presented in Section 6.2 of @FriedmanPNAS using the census
+income data. This sample, taken from 1994 US census data, consists of
+observations from 48842 people divided into a training set of 32561 and
+an independent test set of 16281. The binary outcome variable
+$y\in\{0,1\}$ indicates whether or not a person's income is greater than
+\$50000 per year. There are 14 predictor variables $\mathbf{x}$
+consisting of various demographic and financial properties associated
+with each person. The goal is to contrast $y$ with estimates of
+$\Pr(y=1\,|\,\mathbf{x})$ obtained by several machine learning methods:
+gradient boosting on logistic scale using maximum likelihood (GBL),
+random forest (RF), and gradient boosting on the probability scale (GBP)
+using least--squares.
+
+First load `conTree` package
+
+```{r}
+library(`conTree`)
+```
+
+The next step is to load and attach the data with the R command
+
+```{r}
+data(census, package = "conTree")
+attach(census)
+```
+
+This creates the following numeric vectors and data frames :
+
+|Variable  |Description                                    |
+|:---------|:----------------------------------------------|
+|`x`       |training data predictor variables (data frame) |
+|`y`       |training data outcome (high salary indicator)  |
+|`xt`      |test data predictor variables (data frame)     |
+|`yt`      |test data outcome                              |
+|`gbl`     |training data GBL estimates                    |
+|`gblt`    |test data GBL estimates                        |
+|`rf`      |training data RF estimates                     |
+|`rft`     |test data RF estimates                         |
+|`gbp`     |training data GBP estimates                    |
+|`gbpt`    |test data GBP estimates                        |
+
+
+
+Note that all of the $\Pr(y=1\,|\,\mathbf{x})$ estimates were obtained
+using the training data ($\mathtt{x}$,`y`) only.
+
+Partition *test* data into two parts
+
+```{r}
+dx = 1:10000
+dxt = 10001:16281
+```
+
+Contrast $y$ and GBL estimates using first part
+
+```{r}
+tree = contrast(xt[dx,], yt[dx], gblt[dx], type = 'prob')
+```
+
+Validate on second part which produces the command line output:
+
+```{r}
+nodesum(tree, xt[dxt,], yt[dxt], gblt[dxt])
+```
+
+The first component `$nodes` lists the tree node identifiers for each
+terminal node in order of region discrepancy. The second `$cri` gives
+the actual discrepancy of each corresponding region. The third component
+`$wt` shows the corresponding number of observations in each region. The
+quantity `$avecri` is the observation weighted average discrepancy over
+all regions.
+
+The function `nodeplots()`  produces the graphical tree summary shown
+in Figure \@ref(fig:fig1).
+
+```{r fig1, fig = TRUE, fig.cap = "Graphical tree summary."}
+nodeplots(tree, xt[dxt,], yt[dxt], gblt[dxt])
+```
+
+The blue bars in the upper barplot represent the empirical $\Pr(y=1)$
+in each region whereas the red ones show the mean of the GBL
+predictions in the corresponding regions. One sees dramatic over
+estimation of the small probabilities.
+
+Region boundaries for selected nodes 7 and 29 can be obtained by:
+
+```{r}
+treesum(tree, c(7, 29))
+```
+
+Interpretation of this output is described in Section \@ref(treesum).
+
+The command
+
+```{r}
+nx = getnodes(tree, xt)
+```
+
+obtains the terminal node identity for each test observation for the
+tree represented in Figure \@ref(fig:fig1). The commands
+
+```{r fig2, fig = TRUE, fig.cap = "GBL vrsus GBP probability estimates for test data observations in region 7."}
+plot(gblt[nx == 7], gbpt[nx == 7], pch = '.', xlab = 'GBTL', ylab = 'GBPT')
+lines(c(0, 1), c(0, 1), col = 'red')
+```
+
+plot the test data GBP predictions against those of GBL for the
+highest discrepancy region 7. The red line represents equality. The
+result shown in Figure \@ref(fig:fig2) indicates that the gradient
+boosting probabilities based on log-odds estimates in this region are
+considerably larger but proportional to those obtained by direct
+probability estimation using least-squares. One also sees the effect
+of truncating the out of range estimates produced by the latter. In
+spite of this the GBP probability estimates are seen in Figure
+\@ref(fig:fig3) (below) to be from three to four times more accurate
+than those of GBL
+
+We next plot the lack-of-fit contrast curve for GBL using a 50 terminal
+node contrast tree
+
+```{r, eval = FALSE}
+tree = contrast(xt[dx,], yt[dx], gblt, type = 'prob', tree.size = 50)
+lofcurve(tree, xt[dxt,], yt[dxt], gblt[dxt], doplot = TRUE)
+```
+
+Next we add the corresponding curve for RF predicted probabilities
+
+```{r, eval = FALSE}
+tree = contrast(xt[dx, ], yt[dx], rft[dx, 2], type = 'prob', tree.size = 50)
+u = lofcurve(tree, xt[dxt, ], yt[dxt], rft[dxt, 2], doplot = FALSE)
+lines(u$x, u$y, col = 'blue')
+```
+
+And finally that for the GBP estimates
+
+```{r, eval = FALSE}
+tree = contrast(xt[dx, ], yt[dx], gbpt[dx], type = 'prob', tree.size = 50)
+u = lofcurve(tree, xt[dxt, ], yt[dxt], gbpt[dxt], doplot = FALSE)
+lines(u$x, u$y, col = 'red')
+```
+
+```{r fig3, echo = FALSE, fig = TRUE, fig.cap = "Lack-of-fit contrast curves for GBL (black), RF (blue), and GBP (red) for census income data."}
+tree = contrast(xt[dx,], yt[dx], gblt, type = 'prob', tree.size = 50)
+lofcurve(tree, xt[dxt,], yt[dxt], gblt[dxt], doplot = TRUE)
+tree = contrast(xt[dx, ], yt[dx], rft[dx, 2], type = 'prob', tree.size = 50)
+u = lofcurve(tree, xt[dxt, ], yt[dxt], rft[dxt, 2], doplot = FALSE)
+lines(u$x, u$y, col = 'blue')
+tree = contrast(xt[dx, ], yt[dx], gbpt[dx], type = 'prob', tree.size = 50)
+u = lofcurve(tree, xt[dxt, ], yt[dxt], gbpt[dxt], doplot = FALSE)
+lines(u$x, u$y, col = 'red')
+```
+
+The result is shown in Figure \@ref(fig:fig3).
+
+
+## Contrast boosting
+
+Here we illustrate the use of contrast boosting to improve prediction
+performance of GBL. The model is built using the *training* data with
+the command
+
+```{r}
+modgbl = modtrast(x, y, gbl, type = 'prob', niter = 200)
+```
+
+We can plot tree average discrepancy versus iteration number on the
+training data and super impose a corresponding plot based on the test
+data set with the commands:
+
+```{r fig4, fig = TRUE, fig.cap = "`xval(x, y, gbl, modgbl, col = 'red')`"}
+xval(modgbl, x, y, gbl, col = 'red')
+xval(modgbl, xt, yt, gblt, col = 'green', doplot = 'next')
+```
+
+The result is shown in Figure \@ref(fig:fig4). Note that results at
+every tenth iteration are shown.
+
+Model predictions on the test data set can be obtained with the command
+
+```{r}
+hblt = predtrast(modgbl, xt, gblt)
+```
+
+These can be contrasted with the $y$ - values using the first test set
+sample
+
+```{r}
+tree = contrast(xt[dx, ], yt[dx], hblt[dx], type = 'prob')
+```
+
+and summarized on the other test sample with the command
+
+```{r fig5, fig = TRUE, fig.cap = "`nodeplots(tree, xt[dxt, ], yt[dxt], hblt[dxt])`"}
+nodeplots(tree, xt[dxt, ], yt[dxt], hblt[dxt])
+```
+
+producing Figure \@ref(fig:fig5).
+
+Comparing with Figure \@ref(fig:fig5) one sees that contrast boosting
+the GBL model appears to have substantially reduced the shrinking of
+the of the extreme probabilities estimates thereby improving its
+conditional probability estimation accuracy.
+
+One can boost the RF and GBP models in the same way using the commands
+analogous with those used here for the GBL model. Additionally,
+lack-of-fit contrast curves can be produced and plotted for all three
+boosted models using modifications of the corresponding commands above.
+The results are shown in Fig. 4 of Friedman (2020).
+
+## Conditional distributions
+
+We illustrate contrasting and estimating conditional distributions
+$p_{y}(y\,|\,\mathbf{x})$ using the demographics data set described in
+Table 14.1 of Hastie, Tibshirani and Friedman (2008). Here we attempt to
+estimate a persons age as a function of the other 13 demographic
+variables. For this data set age value is reported as being in one of
+seven intervals
+$$age\in\text{\{13-17, 18-24, 25-34, 35-44, 45-54, 55-64,}\geq\text{ 65\}.}$$
+As input to the algorithm each persons age is randomly generated
+uniformly within its corresponding reported interval. For the last
+interval an exponential distribution was used with mean corresponding to
+life expectancy after reaching age 65.
+
+We first load the data and attach it.
+
+```{r}
+data(age_data, package = "conTree")
+attach(age_data)
+```
+
+This loads the following numeric vectors and data frames:
+
+|Variable |Description                                            |
+|:--------|:------------------------------------------------------|
+|`xage`   |outcome variable (age)                                 |
+|`yage`   |predictor variables (other demographics - data frame)  |
+|`gbage`  |gradient boosting model for median (yage $\vert$ xage) |
+
+
+The command
+
+```{r fig6, fig = TRUE, fig.cap = "`hist(age)`"}
+hist(yage)
+```
+
+produces the marginal age distribution as seen in Figure \@ref(fig:fig6).
+
+This data is divided into training and test data subsets
+
+```{r}
+dl = 1:5000 # training data`
+dt = 5001:8856 # test data`
+```
+
+We next contrast the distribution of $y\,|\,\mathbf{x}$ with that of
+the no information hypothesis $p_{y}(y\,|\,\mathbf{x})=\hat{p}_{y}(y)$
+where $\hat {p}_{y}(y)$ is the empirical marginal $y$ - distribution
+independent of $\mathbf{x}$ as shown in Figure \@ref(fig:fig6). First
+create independent marginal distribution of $y$ as the contrasting
+distribution
+
+```{r}
+set.seed(5)
+zage = yage[sample.int(length(yage))]
+```
+
+Then contrast with $y$ - distribution
+
+```{r}
+treezage = contrast(xage[dt, ], yage[dt], zage[dt], tree.size = 9, min.node = 200)
+```
+
+with tree test set command line summary produced by
+
+```{r}
+nodesum(treezage, xage[dt, ], yage[dt], zage[dt])
+```
+
+and graphical summary produced by
+
+```{r fig7, fig = TRUE, fig.cap = "`nodeplots(treezage, xage[dt, ], yage[dt], zage[dt])`"}
+nodeplots(treezage, xage[dt, ], yage[dt], zage[dt])
+```
+
+shown in Figure \@ref{fig:fig7).
+
+Each frame in Figure \@ref{fig:fig7) shows a QQ-plot of the
+distribution of age $y$ versus that of its $\mathbf{x}$
+independent marginal counterpart (Figure \@ref(fig:fig6)) in each of
+eight regions returned by contrast. To the extent the two
+distributions are similar the points would lie close to the diagonal
+(red) line. Here they are see to be very different indicating that
+$p_{y}(y\,|\,\mathbf{x})$ is highly dependent on $\mathbf{x}$.
+
+We next construct $y_{B}\sim p_{B}(y\,|\,\mathbf{x)}$, the residual
+bootstrap approximation to $p_{y}(y\,|\,\mathbf{x)}$ using gradient
+boosting median estimates for its location. This assumes that
+$p_{y}(y\,|\,\mathbf{x)}$ is homoskedastic with varying location
+
+```{r}
+res = yage - gbage
+```
+
+```{r}
+rbage = gbage + res[sample.int(length(res))]
+```
+
+and contrast $y$ with $y_{B}$ on the test data
+
+```{r}
+treerbage = contrast(xage[dt, ], yage[dt], rbage[dt], tree.size = 9, min.node = 200)
+```
+
+```{r fig8, fig = TRUE, fig.cap ="`nodeplots(treerbage, xage[dt, ], yage[dt], rbage[dt])`" }
+nodeplots(treerbage, xage[dt, ], yage[dt], rbage[dt])
+```
+
+The result is shown in Figure \@ref{fig:fig8).
+
+Although not perfect, the residual bootstrap $p_{B}(y\,|\,\mathbf{x)}$
+is seen to provide a much closer approximation to
+$p_{y}(y\,|\,\mathbf{x)}$ than the global marginal $p_{y}(y)$. This
+indicates that its location has a strong dependence on $\mathbf{x}$ as
+captured by the gradient boosting conditional median estimate.
+
+Next we attempt to further improve the estimate of
+$p_{y}(y\,|\,\mathbf{x)}$ by applying distribution boosting to the
+training data starting with the residual boostrap approximation.
+
+```{r}
+mdlrb = modtrast(xage[dl, ], yage[dl], rbage[dl], min.node = 200)
+```
+
+The commands
+
+```{r fig9, fig = TRUE, fig.cap = "`xval(mdlrb, xage[dl, ], yage[dl], rbage[dl], col = 'red')`"}
+xval(mdlrb, xage[dl, ], yage[dl], rbage[dl], col = 'red')
+xval(mdlrb, xage[dt, ], yage[dt], rbage[dt], col = 'green', doplot = 'next')
+```
+
+produce a plot of training (red) and test (green) data average tree
+discrepancy as a function of iteration number (every 10th iteration) as
+shown is Figure \@ref(fig:fig9).
+
+The command
+
+```{r}
+hrbage = predtrast(mdlrb, xage[dt, ], rbage[dt])
+```
+
+transforms the test data residual bootstrap distribution
+$y_{B}\sim p_{B}(y\,|\,\mathbf{x)}$ to the $y$ distribution estimate
+$\hat{y}\sim\hat{p}_{\hat{y}}(y\,|\,\mathbf{x)}$.
+
+The commands
+
+```{r fig10, fig = TRUE, fig.cap = "`nodeplots(treerbage, xage[dt, ], yage[dt], hrbage)`"}
+treehrbage = contrast(xage[dt, ], yage[dt], hrbage, tree.size = 9, min.node = 200)
+nodeplots(treerbage, xage[dt, ], yage[dt], hrbage)
+```
+
+contrast the transformed distribution $\hat{y}$ with that of $y$ on the
+test data. Results are shown in Figure \@ref(fig:fig10).
+
+As seen the results are not perfect but somewhat better than that for
+the residual bootstrap distribution shown in Figure \@ref(fig:fig8).
+This is verified by the corresponding lack-of-fit contrast curves
+shown in Figure \@ref(fig:fig11) as produced by the commands
+
+```{r fig11, fig = TRUE, fig.cap = "Lack-of-fit contrast curves"}
+lofcurve(treezage, xage[dt, ], yage[dt], zage[dt])
+u = lofcurve(treerbage, xage[dt, ], yage[dt], rbage[dt], doplot = FALSE)
+lines(u$x, u$y, col = 'blue')
+u = lofcurve(treehrbage, xage[dt, ], yage[dt], hrbage, doplot = FALSE)
+lines(u$x, u$y, col = 'red')
+```
+
+The lack-of-fit contrast curves are plotted for the three estimates of
+$p_{y}(y\,|\,\mathbf{x})$: global marginal $p_{y}(y)$ (black), residual
+bootstrap $p_{B}(y\,|\,\mathbf{x)}$ (blue) and distribution boosting
+estimate $\hat{p}_{y}(y\,|\,\mathbf{x})$ (red). Distribution boosting is
+seen to improve the accuracy of the conditional distribution estimate by
+roughly a factor of two.
+
+Finally we estimate $p_{y}(y\,|\,\mathbf{x})$ at $\mathbf{x}$ - values
+for nine selected observations
+
+```{r}
+obs = c(8843, 5716, 7831, 6505, 4949, 7555, 3202, 6048, 7134)
+```
+
+at 500 quantile values
+
+```{r}
+p = ((1:500) -0.5) / 500
+qres = as.numeric(quantile(res, p))
+```
+
+and plot their CDFs with
+
+```{r fig12, fig = TRUE, fig.cap = "CDF estimates for nine $\\mathbf{x}$-values."}
+opar <- par(mfrow=c(3,3))
+for (k in 1:9) {
+    plot(ydist(mdlrb, xage[obs[k], ], gbage[obs[k]] + qres), p, type = 'l', xlim=c(13, 100),
+         xlab = 'Age', main = paste('Observation', as.character(obs[k])))
+    points(yage[obs[k]], 0, col = 'red')
+    title(paste('Observation', obs[k]))
+}
+par(opar)
+```
+as shown in Figure \@ref{fig:fig12). The red points shown at the bottom of each plot
+display the actual realized $y$ - value (age) for that observation.
+Prediction intervals for each observation can be read directly from its
+corresponding CDF display.
+
+Probability densities for these observations can be visualized with the
+commands
+
+```{r fig13, fig = TRUE, fig.cap = "Corresponding probability densities for the nine observations."}
+opar <- par(mfrow = c(3,3))
+for (k in 1:9) {
+    hist(ydist(mdlrb, xage[obs[k], ], gbage[obs[k]] + qres), xlim = c(13, 100), nclass = 10,
+         xlab = 'Age', main = paste('Observation', as.character(obs[k])))
+    points(yage[obs[k]], 0, col = 'red')
+    title(paste('Observation', obs[k]))
+}
+par(opar)
+```
+as seen in Figure \@ref(fig:fig13).
+
+Considerable heteroskedasticity and skewness in the estimated
+conditional distributions are evident.
+
+## Two sample contrast trees
+
+The use of two sample contrast trees is illustrated on the air quality
+data set also from the Irvine Machine Learning Data Repository. The data
+set consists of hourly averaged measurements from an array of 5 metal
+oxide chemical sensors embedded in an air quality chemical multisensor
+device. The outcome variable $y$ is  the corresponding true hourly
+averaged concentration CO taken from a reference analyzer. The input
+variables $\mathbf{x}$ are taken to be the corresponding hourly averaged
+measurements of the other 13 quantities as described at the download web
+site. The goal here is to contrast the conditional distribution of
+$y|\,\mathbf{x}$ for data taken in the first six months (January --
+June) to that of the last six months (July -- December).
+
+The first step is to load the data
+
+```{r}
+data(air_quality)
+attach(air_quality)
+```
+
+This loads in three vectors and a data frame
+
+|Variable |Description                                            |
+|:--------|:------------------------------------------------------|
+|`yco`    |outcome variable (CO concentration)                    |
+|`xco`    |predictor variables (data frame)                       |
+|`zco`    |sample membership indicator                            |
+|`pr2`    |probability propensity score.                          |
+
+The first quantity `yco` is the outcome variable $y$, `xco` is a data
+frame containing the 13 predictor variables $\mathbf{x}$ for each
+observation and `zco` indicates sample membership: `zco < 0`
+$\Rightarrow$ first six months, `zco > 0` $\Rightarrow$ last six months.
+The vector `pr2` contains gradient boosting model predictions for
+$\Pr(z>0\,|\,\mathbf{x})$; that is the predicted probability of each
+observation belonging to the second sample as estimated from the
+predictor variables.
+
+We first contrast the means $E(y\,|\,\mathbf{x})$ of the different
+samples as a function of $\mathbf{x}$. The command
+
+```{r}
+c(mean(yco[zco < 0]), mean(yco[zco > 0]))
+```
+
+displays the global means of the two samples with mean difference
+$0.058$.
+
+We first create learning and test data sets
+
+```{r}
+dl = 1:6000  # learning`
+dt = 6001:9357 # test`
+```
+
+and contrast the means as a function of $\mathbf{x}$ as follows.
+
+```{r}
+tree = contrast(xco[dl, ], yco[dl], zco[dl], mode = 'twosamp', type = 'diffmean')
+nodesum(tree, xco[dt,], yco[dt], zco[dt])
+```
+Here cri represents the mean difference in each of the nine regions
+uncovered by the contrast tree. One sees that there are local regions of
+the $\mathbf{x}$ - space where the mean difference between the two
+samples is much larger than that of the global means.
+
+Since the contrast tree regions are of finite extent mean differences
+within each can originate from two sources. One is due to actual
+differences in the conditional distributions $p_{y}(y\,|$
+$\,\mathbf{x,\,}z<0)\,$ and $p_{y}(y\,|\,\mathbf{x,\,}z>0)$ in the
+region. The other is differences in the marginal $\mathbf{x}$ -
+distributions $p_{\mathbf{x}}(\mathbf{x}\,|\,z<0)$ and
+$p_{\mathbf{x}}(\mathbf{x}\,|\,z>0)$ over each individual region. Since
+interest is usually in the former one can mitigate the influence of the
+latter by propensity weighting based on the propensity probability
+scores. The command
+
+```{r fig14, fig = TRUE, fig.cap = "`hist(pr2, nclass = 100)`"}
+hist(pr2, nclass = 100)
+```
+
+displays the distribution of the input propensity probability scores
+in Figure \@ref(fig:fig14). One sees that there are moderate
+differences between the $\mathbf{x}$ - distributions of the two
+samples at least globally.
+
+The propensity weights are calculated with the commands
+
+```{r}
+wp = rep(0, length(zco))
+wp[zco > 0] = 1 / pr2[zco > 0]
+wp[zco < 0] = 1 / (1 - pr2[zco < 0])
+wp = length(wp) * wp / sum(wp)
+```
+
+The corresponding (weighted) contrast tree is obtained as below.
+
+```{r}
+tree = contrast(xco[dl, ], yco[dl], zco[dl], w = wp[dl], mode = 'twosamp', type = 'diffmean')
+nodesum(tree, xco[dt, ], yco[dt], zco[dt], w = wp[dt])
+```
+
+The component \$wt contains the sum of the weights in each region.
+Although discrepancies remain, they are somewhat reduced when accounting
+for the differences of the $\mathbf{x}$ - distributions within each
+region. The command
+
+```{r fig15, fig = TRUE, fig.cap = "`nodeplots(tree, xco[dt,], yco[dt], zco[dt], w = wp[dt])`"}
+nodeplots(tree, xco[dt,], yco[dt], zco[dt], w = wp[dt])
+```
+
+produces the graphical summary shown in Figure \@ref(fig:fig15). The
+ red/blue bars on the lower plot represent the fraction of the total
+ weights of the first/second sample in each region.
+
+A reference (null) distribution for two sample tree statistics under the
+hypothesis of no difference between the samples can be obtained by
+permutation testing. The analysis is repeatedly performed with randomly
+permuted $z$ - values, thereby randomly assigning observations to each
+sample. The commands
+
+```{r fig16, fig = TRUE, fig.cap = "Two sample null distribution."}
+avedisc = rep(0, 1000)
+set.seed(13)
+for (k in 1:1000) {
+    zcot = zco[sample.int(length(zco))]
+    tre = contrast(xco[dl, ], yco[dl], zcot[dl], mode = 'twosamp', type = 'diffmean')
+    avedisc[k] = nodesum(tre, xco[dt,], yco[dt], zcot[dt])$avecri
+}
+hist(avedisc, xlim = c(0, 4))
+points(c(2.937557, 3.790423), c(0, 0), col = c('blue', 'red'))
+```
+compute and display average tree discrepancy for 1000 replications of
+this procedure. Figure \@ref(fig:fig16) shows the histogram of these null discrepancies along
+with the corresponding propensity weighted/unweighted alternatives shown
+as the blue/red points. One sees that the results based on the original
+sample assignments are highly significant.
+
+The command
+
+```{r}
+treesum(tree,c(11,25))
+```
+
+produces the command line output.
+
+As described in Section \@ref(treesum) the output for each terminal node shows the
+sequence of splits that produced its corresponding region. The names
+corresponding to each predictor variable can be obtained with the
+command
+
+```{r}
+names(xco)
+```
+
+so that the boundaries of nodes 11 and 25 are defined by
+
+|Node  |Rule                                   |
+|:-----|:--------------------------------------|
+|`11`  |`RH>106 & AH>5232 & NMHC.GT >1112`     |
+|`25`  |`106<=RH< 596 & AH<=4600 & NOx.GT<334` |
+
+
+We next contrast the conditional distributions $y\,|\,\mathbf{x}$ of
+the two samples. Figure \@ref(fig:fig17) shows a QQ-plot between the
+respective $y$ global distributions on the test data obtained by the
+commands
+
+```{r fig17, fig = TRUE, fig.cap = "`qqplot(ycodt[zco[dt] < 0], ycodt[zco[dt] > 0], pch = '.')`"}
+ycodt = yco[dt]
+qqplot(ycodt[zco[dt] < 0], ycodt[zco[dt] > 0], pch = '.')
+lines(c(0, 200), c(0, 200), col = 'red')
+```
+
+The global $y$ - distributions of the two samples are seen to be nearly
+identical. The corresponding (propensity weighted) contrast tree results
+are obtained with the commands
+
+```{r}
+tree = contrast(xco[dl, ], yco[dl], zco[dl], w = wp[dl], mode = 'twosamp', tree.size = 9)
+nodeplots(tree, xco[dt,], yco[dt], zco[dt], w = wp[dt])
+```
+
+as shown in Figure \@ref{fig:fig16). The tree has uncovered a few
+regions where there are moderate differences between the two
+distributions.

@@ -1,0 +1,153 @@
+---
+title: "Contrast Trees and Distribution Boosting in R"
+author: "Jerome H. Friedman"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: ["book.bib", "packages.bib"]
+biblio-style: apalike
+link-citations: yes
+description: "This is a tutorial on the R package `conTree`."
+---
+
+# Introduction
+
+This tutorial describes the R package conTree that implements the
+contrast tree and distribution boosting procedures described in
+@FriedmanArxiv and @FriedmanPNAS. A brief summary of the methodology
+is provided. This is followed by demonstrations of the application of
+some of the package features on data examples. A more detailed
+description of all procedures is included with the full package
+documentation. Some familiarity with @FriedmanArxiv and the
+statistical package R is assumed. R can be downloaded from
+[CRAN](https://www.r-project.org).
+
+## Contrast trees
+
+Contrast trees are used to assess the accuracy of many types of machine
+learning estimates that are not amenable to standard validation
+techniques. These include properties of the conditional distribution
+$p_{y}(y\,|\,\mathbf{x})$ (means, quantiles, complete distribution) as
+functions of $\mathbf{x}$. Given a set of predictor variables
+$\mathbf{x}=(x_{1},x_{2},$$,x_{p})$ and two outcome variables $y$ and $z$ associated with each
+$\mathbf{x}$, a contrast tree attempts to partition the space of
+$\mathbf{x}$ values into local regions within which the respective
+distributions of $y\,|\,\mathbf{x}$ and $z\,|\,\mathbf{x}$, or selected
+properties of those distributions such as means or quantiles, are most
+different.
+
+The outcomes $y$ and $z$ can be different functions of $\mathbf{x}$,
+$y=$ $f(\mathbf{x})$ and $z=g(\mathbf{x})$, such as predictions produced
+by two different learning algorithms. The goal of the contrast tree is
+then to identify regions in $\mathbf{x}$ - space where the two
+predictions most differ. In other cases the outcome $y$ may be
+observations of a random variable assumed to be drawn from some
+distribution at $\mathbf{x}$, $y\sim
+p_{y}(y\,|\,\mathbf{x})$. The quantity $z$ might be an estimate for some
+property of that distribution such as its estimated mean $\hat{E}
+(y\,|\,\mathbf{x})$ or $p$-th quantile $\hat{Q}_{p}(y\,|\,\mathbf{x})$
+as a function of $\mathbf{x}$. One would like to identify $\mathbf{x}$ -
+regions where the estimates $z$ appear to be the least compatible with
+the actual empirical distribution of $y$ within the region.
+Alternatively $z$ itself could also be a random variable independent of
+$y$ (given $\mathbf{x}$) with distribution $p_{z}(z\,|\,\mathbf{x})$ and
+interest is in identifying regions of $\mathbf{x}$ - space where the two
+distributions $p_{y}(y\,|\,\mathbf{x})$ and $p_{z}(z\,|\,\mathbf{x})$
+most differ.
+
+Contrast trees can serve as a lack-of-fit measure. If the procedure is
+successful in finding local $\mathbf{x}$ - regions where the empirical
+distribution of $y$ is inconsistent with the model predictions $z$,
+lack-of-fit of the model to the data in those regions is indicated. A
+measure of such lack-of-fit is the size of the discrepancy.
+
+## Contrast boosting
+
+If the regions $\{R_{m}^{(1)}\}_{1}^{M}$ produced by a contrast tree
+uncover lack-of-fit, boosted contrast trees can often improve prediction
+accuracy. The predictions $z$ in each separate region $R_{m}^{(1)}$ of
+the tree can be modified $z\rightarrow z^{(1)}$
+$=z+\delta_{m}^{(1)}\;(\mathbf{x}\in
+R_{m}^{(1)})$ so as to obtain reduced discrepancy between $y$ and
+$z^{(1)}$ in the region, thereby improving average discrepancy over all
+regions. The modified $z^{(1)}$ - values can then be contrasted with $y$
+using another contrast tree $\{R_{m}^{(2)}\}_{1}^{M}$ with updates
+$z^{(2)}=z^{(1)}+\delta_{m}^{(2)}\;(\mathbf{x}\in R_{m}^{(2)})$. These in turn can be
+contrasted with $y$ to produce new regions $\{R_{m}^{(3)}\}_{1}^{M}$ and
+corresponding updates $\{\delta_{m}^{(3)}\}_{1}^{M}$. Such iterations
+can be continued $K$ times until the updates become small. Each tree $k$
+in the boosted sequence $1\leq k\leq K$ partitions the $\mathbf{x}$ -
+space into a set of regions $\{R_{m}^{(k)}\}$. Any point $\mathbf{x}$
+lies within one region $m_{k}(\mathbf{x})$ of each tree with
+corresponding update $\delta_{m_{k}(\mathbf{x})}^{(k)}$. Starting with a
+specified initial value $z(\mathbf{x})$ the estimate
+$\hat{z}(\mathbf{x})$ at $\mathbf{x}$ is then
+
+\begin{equation}
+\hat{z}(\mathbf{x})=z(\mathbf{x})+\sum_{k=1}^{K}\delta_{m_{k}(\mathbf{x})}^{(k)}\text{.} (\#eq:one)
+\end{equation}
+
+## Distribution boosting
+
+Here $y$ and $z$ are both considered to be random variables
+independently generated from respective distributions
+$p_{y}(y\,|\,\mathbf{x)}$ and $p_{z}(z\,|\,\mathbf{x})$. The purpose of
+a contrast tree is to identify regions of $\mathbf{x}$ - space where the
+two distributions most differ. The goal of distribution boosting is to
+estimate a (different) transformation of $z$ at each $\mathbf{x}$,
+$g_{\mathbf{x}}(z\,)$, such that the distribution of the transformed
+variable is the same as that of $y$ at $\mathbf{x}$. That is,
+
+\begin{equation}
+p_{g_{\mathbf{x}}}(g_{\mathbf{x}}(z\,)\mathbf{\,|\,x})=p_{y}(y\,|\,\mathbf{x})\text{.} (\#eq:two)
+\end{equation}
+
+Thus, starting with $z$ values sampled from a
+known distribution $p_{z}(z\,|\,\mathbf{x})$ at each $\mathbf{x}$, one
+can use the estimated transformation $\hat{g}_{\mathbf{x}}(z\,)$ to
+obtain an estimate $\hat{p}_{y}(y\,|\,\mathbf{x})$ of the $y$ - distribution at that $\mathbf{x}$.
+The transformation $g_{\mathbf{x}}(z\,)$ is usually a different function
+of $z$ at each different $\mathbf{x}$.
+
+The distribution boosting procedure produces an ordered sequence of $K$
+contrast trees ${\{R_{m}^{(k)}\}_{m=1}^M}_{k=1}^K$.
+Associated with each region $R_{m}^{(k)}$ of each tree $k$ is a
+transformation function $g_{_{m_{k}}}^{(k)}(\cdot)$. Any prediction
+point $\mathbf{x}$ lies within one of the regions $m_{k}(\mathbf{x})$ of
+each contrast tree $k$ with corresponding transformation function
+$g_{m_{k}(\mathbf{x})}^{(k)}(\cdot)$. A value of $z$ can be transformed
+to a estimated value for $y$, $\hat{y}=\hat
+{g}_{\mathbf{x}}(z\,)$, where
+
+\begin{equation}
+\hat{g}_{\mathbf{x}}(z)=g_{m_{K}(\mathbf{x})}^{(K)}(g_{m_{K-1}(\mathbf{x})}^{(K-1)}(g_{m_{K-2}(\mathbf{x})}^{(K-2)}\cdot\cdot\cdot
+g_{m_{1}(\mathbf{x})}^{(1)}(z))). (\#eq:three)
+\end{equation}
+
+That is, the transformed
+output of each successive tree is further transformed by the next tree
+in the boosted sequence.
+
+## Two-sample trees
+
+Contrast trees are applied to a single data set where each observation
+has two outcomes $y$ and $z$, and a single set of predictor variables
+$\mathbf{x}$. A similar methodology can be applied to two--sample
+problems where there are separate predictor variable measurements for
+$y$ and $z$. Specifically the data consists of two samples
+$\{\mathbf{x}_{i}^{(1)},y_{i}\}_{1}^{N_{1}}$ and
+$\{\mathbf{x}_{i}^{(2)},z_{i}\}_{1}^{N_{2}}$. The predictor values
+$\mathbf{x}_{i}^{(1)}$ correspond to outcomes $y_{i}$, and the values
+$\mathbf{x}_{i}^{(2)}$ correspond to $z_{i}$. The goal is  to identify
+regions in $\mathbf{x}$ - space where the two conditional distributions
+$p_{y}(y\,|\,\mathbf{x})$ and $p_{z}(z\,|\,\mathbf{x})$, or selected
+properties of those distributions, most differ.
+
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

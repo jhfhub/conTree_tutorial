@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 conTree | Contrast Trees and Distribution Boosting in R</title>
+  <meta name="description" content="This is a tutorial on the R package conTree." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 conTree | Contrast Trees and Distribution Boosting in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a tutorial on the R package conTree." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 conTree | Contrast Trees and Distribution Boosting in R" />
+  
+  <meta name="twitter:description" content="This is a tutorial on the R package conTree." />
+  
+
+<meta name="author" content="Jerome H. Friedman" />
+
+
+<meta name="date" content="2020-06-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="examples.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Contrast Trees and Distribution Boosting in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code></a><ul>
+<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code></a></li>
+<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code></a></li>
+<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code></a></li>
+<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code></a></li>
+<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code></a></li>
+<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code></a></li>
+<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code></a></li>
+<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code></a></li>
+<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code></a></li>
+<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples</a><ul>
+<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation</a></li>
+<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting</a></li>
+<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions</a></li>
+<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Contrast Trees and Distribution Boosting in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="contree" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> <code>conTree</code></h1>
+<p><code>conTree</code> is an R package consisting of a collection of procedures
+implementing aspects of the contrast tree and boosting
+methodology. This tutorial describes the main procedures as well as
+examples illustrating their application on several data sets. The
+procedure descriptions presented here only cover the subset of their
+respective control parameters most commonly used. See the package
+documentation for a complete description of each procedure. The
+principal procedures for building and interpreting contrast trees are
+<code>contrast</code>, <code>nodesum</code>, <code>nodeplots</code>, <code>treesum</code>, <code>getnodes</code>, and
+<code>lofcurve</code>. Those for contrast and distribution boosting are
+<code>modtrast</code>, <code>xval</code>, <code>predtrast</code> and <code>ydist</code>.</p>
+<div id="contrast" class="section level2">
+<h2><span class="header-section-number">2.1</span> <code>contrast()</code></h2>
+<p>This is the central procedure that builds contrast trees:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">tree =<span class="st"> </span><span class="kw">contrast</span>(x, y, z, <span class="dt">mode =</span> <span class="st">&quot;onesamp&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;dist&quot;</span>, <span class="dt">tree.size =</span> <span class="dv">10</span>, <span class="dt">min.node =</span> <span class="dv">500</span>)</a></code></pre></div>
+<p>The important arguments are: <code>x</code> a <span class="math inline">\(n\times p\)</span> training input
+predictor variable data matrix or data frame. Rows are the <span class="math inline">\(n\)</span> -
+observations and columns are <span class="math inline">\(p\)</span> variables. Must be a numeric matrix
+or a data frame. <code>y</code> is a numeric vector of length <span class="math inline">\(n\)</span> containing
+training data outcome values. <code>z</code> is a length <span class="math inline">\(n\)</span> numeric vector
+containing values of the second contrasting quantity for each
+observation. <code>mode</code> is the contrasting mode. <code>mode = &quot;onesamp&quot;</code>
+<span class="math inline">\(\Rightarrow\)</span>  ordinary one-sample tree contrasting <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>. <code>mode = &quot;twosamp&quot;</code> <span class="math inline">\(\Rightarrow\)</span> two-sample tree contrasting outcomes <span class="math inline">\(y\)</span>
+for samples of size <span class="math inline">\(n_{1}\)</span> and <span class="math inline">\(n_{2}\)</span> respectively. In this mode
+<span class="math inline">\(n=n_{1}+n_{2}\)</span>. <code>x</code>  contains the <span class="math inline">\(n\times p\)</span> training predictor
+variable data matrix or data frame of the pooled sample,  <code>y</code> contains
+the corresponding pooled outcome values and <code>z</code> is a vector of length
+<span class="math inline">\(n\)</span> specifying sample identity. <code>z[i] &lt; 0</code>
+<span class="math inline">\(\Rightarrow(\mathbf{x}_{i},y_{i})\)</span> in the first sample, <code>z[i] &gt; 0</code>
+<span class="math inline">\(\Rightarrow(\mathbf{x}_{i},y_{i})\)</span> in second sample.</p>
+<p>The parameter <code>type</code> controls the nature of the contrast by specifying
+the discrepancy measure between <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> to be used in each region
+<span class="math inline">\(R_{m}\)</span> to build the tree. For <code>mode = &quot;onesamp&quot;</code>, there are currently
+six possibilities for <code>type:</code></p>
+<ul>
+<li><p><code>type = &quot;diff&quot;</code>. Contrast joint paired values of <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> using
+discrepancy
+<span class="math display">\[\begin{equation}
+d_{m}=\frac{1}{N_{m}}\sum_{\mathbf{x}_{i}\in
+R_{m}}|\,y_{i}-z_{i}\,|\text{.}
+\end{equation}\]</span>
+<span class="math inline">\(N_{m}\)</span> is the corresponding observation count in region <span class="math inline">\(R_{m}\)</span>.</p></li>
+<li><p><code>type = &quot;diffmean&quot;</code>. Contrast absolute mean difference between
+<span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>. Discrepancy measure is
+<span class="math display">\[\begin{equation} 
+d_{m}=\frac{1}{N_{m}}\left\vert
+\sum_{\mathbf{x}_{i}\in R_{m}}(y_{i}-z_{i})\right\vert \text{.}
+\end{equation}\]</span></p></li>
+<li><p><code>type = &quot;maxmean&quot;</code>. Contrast signed mean difference between
+<span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>. Discrepancy measure is
+<span class="math display">\[\begin{equation}
+d_{m}=\frac{1}{N_{m}}\sum_{\mathbf{x}_{i}\in
+R_{m}}(y_{i}-z_{i})\text{.}
+\end{equation}\]</span></p></li>
+<li><p><code>type = &quot;prob&quot;</code>. Contrast predicted with empirical probabilities.
+Here <span class="math inline">\(y_{i}\)</span> <span class="math inline">\(\in\{0,1\}\)</span> is the outcome, and <span class="math inline">\(z_{i}\)</span> is the predicted
+probability <span class="math inline">\(\Pr(y_{i}=1)\)</span> for <span class="math inline">\(i\)</span>th observation. Discrepancy is given
+by
+<span class="math display">\[\begin{equation} 
+d_{m}=\frac{1}{N_{m}}\left\vert
+\sum_{\mathbf{x}_{i}\in R_{m}}(y_{i}-z_{i})\right\vert \text{.}
+\end{equation}\]</span></p></li>
+<li><p><code>type = &quot;quant&quot;</code>. Contrast predicted with empirical quantiles.
+<span class="math inline">\(y_{i}\)</span> is the outcome value  and <span class="math inline">\(z_{i}\)</span> is the predicted <span class="math inline">\(p\)</span>th
+quantile value for <span class="math inline">\(i\)</span>th observation. Discrepancy is lack-of-coverage
+<span class="math display">\[\begin{equation}
+d_{m}=\left\vert \,p-\frac{1}{N_{m}}\sum_{\mathbf{x}_{i}\in
+R_{m}}I(y_{i}&lt;z_{i})\right\vert
+\end{equation}\]</span>
+in the region. For this type an
+additional parameter <code>quant</code> specifies the quantile probability <span class="math inline">\(p\)</span>
+with default value <code>quant = 0.5</code>.</p></li>
+<li><p><code>type = &quot;dist&quot;</code>. Contrast the distribution of <span class="math inline">\(y\)</span> with that of
+<span class="math inline">\(z\)</span> (default). Let <span class="math inline">\(\{t_{i}\}=\{y_{i}\}\cup\,\{z_{i}\}\)</span> represent the
+pooled <span class="math inline">\((y,z)\)</span> sample in a region <span class="math inline">\(R_{m}\)</span>. Then discrepancy between
+the distributions of <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> is taken to be
+<span class="math display">\[\begin{equation}
+d_{m}=\frac{1}{2N_{m}-1}\sum_{i=1}^{2N_{m}-1}\frac{\left\vert
+\hat{F}_{y}(t_{(i)})-\hat{F}_{z}(t_{(i)})\right\vert
+}{\sqrt{i\cdot(2N_{m}-i)}}
+\end{equation}\]</span>
+where <span class="math inline">\(t_{(i)}\)</span> is the <span class="math inline">\(i\)</span>th value of <span class="math inline">\(t\)</span>
+in sorted order, and <span class="math inline">\(\hat{F}_{y}\)</span> and <span class="math inline">\(\hat{F}_{z}\)</span> are the
+respective empirical cumulative distributions of <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> in the
+region.</p></li>
+</ul>
+<p><code>type = &quot;class&quot;</code>. Misclassification risk. Here <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(z_{i}\)</span>
+are class labels (<code>in 1:nclass</code>) for each <span class="math inline">\(i\)</span>th observation. Region
+discrepancy is prediction risk
+<span class="math display">\[\begin{equation}d_{m}=\frac{1}{N_{m}}\sum_{\mathbf{x}_{i}\in
+R_{m}}C(y_{i},z_{i})
+\end{equation}\]</span>
+where <span class="math inline">\(C(y,z)\)</span> is the cost of predicting class <span class="math inline">\(z\)</span> when the truth is
+class <span class="math inline">\(y\)</span>. In this case there are two additional arguments that need to
+be specified: <code>nclass</code> the number of classes (default <code>nclass = 2</code>), and
+<span class="math inline">\(C\)</span> an <code>nclass</code> by <code>nclass</code> misclassification cost matrix (default
+<span class="math inline">\(C[i,j] = I(i\neq j)\)</span>).</p>
+<p>For <code>mode = &quot;twosamp&quot;</code> there are currently three possibilities for
+<code>type</code>:</p>
+<ul>
+<li><p><code>type= &quot;dist&quot;</code>. ontrast <span class="math inline">\(y\)</span> distributions of two samples.</p></li>
+<li><p><code>type = &quot;diffmean&quot;</code>. Contrast absolute difference between <span class="math inline">\(y\)</span> -
+means of two samples.</p></li>
+<li><p><code>type = &quot;maxmean&quot;</code>. Contrast signed difference between <span class="math inline">\(y\)</span> -
+means of two samples.</p></li>
+</ul>
+<p><code>tree.size</code> is the specified maximum number of regions (terminal notes)
+of the tree and <code>min.node</code> is the minimum number of observations allowed
+in each region.</p>
+<p>The output of <code>contrast()</code> is a contrast tree object <code>tree</code> to be used
+as input to interpretational procedures described below.</p>
+</div>
+<div id="nodesum" class="section level2">
+<h2><span class="header-section-number">2.2</span> <code>nodesum()</code></h2>
+<p>This procedure produces a summary of the regions produced by a contrast
+tree:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">u =<span class="st"> </span><span class="kw">nodesum</span>(tree, x, y, z)</a></code></pre></div>
+<p>The important arguments are: <code>tree</code>, a contrast tree object produced by
+<code>contrast()</code>. <code>x</code> is a <span class="math inline">\(n\times p\)</span> predictor variable data matrix or data
+frame. Rows are <span class="math inline">\(n\)</span> - observations and columns are <span class="math inline">\(p\)</span> variables. Must
+be a numeric matrix or a data frame with the same number of columns as
+that input to contrast. <code>y</code> is a numeric vector of length <span class="math inline">\(n\)</span> containing
+data outcome values. <code>z</code> is a length <span class="math inline">\(n\)</span> numeric vector containing
+values of a contrasting quantity for each observation. This data can,
+but need not, be the same as the input to <code>contrast()</code> that produced the
+tree.</p>
+<p>The output of nodesum consists of a list <code>u</code> with four components:
+<code>u$nodes</code> is a vector of tree terminal node identifiers. <code>u$cri</code>
+contains the corresponding terminal node discrepancy values (depends on
+contrast type - see above), <code>wt</code> is a vector containing sum of weights
+(counts) in each terminal node and <code>avecri</code> is observation weighted
+discrepancy averaged over all terminal nodes.</p>
+</div>
+<div id="nodeplots" class="section level2">
+<h2><span class="header-section-number">2.3</span> <code>nodeplots()</code></h2>
+<p>This procedure produces a graphical summary of the regions comprising a
+contrast tree:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">nodeplots</span>(tree, x, y, z, <span class="dt">nodes =</span> <span class="ot">NULL</span>, <span class="dt">pts =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p>The parameters <code>tree</code>, <code>x</code>, <code>y</code>, and <code>z</code> are the same as in
+<code>nodesum()</code> above. <code>nodes</code> is a vector of tree terminal node
+identifiers specifying the regions to be displayed . The default is
+all terminal nodes except for <code>type = &quot;dist&quot;</code> or <code>type = &quot;diff&quot;</code> for
+which the default is the nine highest discrepancy regions. <code>pts = TRUE/FALSE</code> will show points as circles/points (<code>type = ’dist’</code> only).</p>
+<p>The output graphical representations of terminal node discrepancies
+depends on tree type. <code>type = &quot;dist&quot;</code>produces QQ–plots of <span class="math inline">\(y\)</span> vs. <span class="math inline">\(z\)</span>
+in each terminal node. Only the nine highest discrepancy nodes are
+shown. <code>type = &quot;diff&quot;</code> shows scatter plots of <span class="math inline">\(y\)</span> versus <span class="math inline">\(z\)</span> in each
+terminal node. Only nine highest discrepancy nodes are shown.
+<code>type = &quot;class&quot;</code> produces a barplot of misclassification risk (upper)
+and total weight/counts (lower) in each terminal node. <code>type = &quot;prob&quot;</code>
+shows upper barplot contrasting empirical (blue) and predicted (red)
+<span class="math inline">\(\Pr(y=1)\)</span> in each terminal node. Lower barplot shows total
+weight/counts in each terminal node. <code>type = &quot;quant&quot;</code> produces upper
+barplot of fraction of <span class="math inline">\(y\)</span> - values less than or equal to corresponding
+<span class="math inline">\(z\)</span> - values (quantile prediction) in each terminal node. Horizontal
+line reflects specified target quantile. Lower barplot shows total
+weight/counts in each terminal node. For <code>type = &quot;diffmean&quot;</code>or
+<code>&quot;maxmean&quot;</code>upper barplot contrasts <span class="math inline">\(y\)</span> - mean (blue) and <span class="math inline">\(z\)</span> - mean
+(red) in each terminal node. Lower barplot shows total weight/counts in
+each terminal node.</p>
+</div>
+<div id="treesum" class="section level2">
+<h2><span class="header-section-number">2.4</span> <code>treesum()</code></h2>
+<p>This procedure prints the <span class="math inline">\(\mathbf{x}\)</span>-region boundaries for selected
+terminal nodes of a contrast tree</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">treesum</span>(tree, <span class="dt">nodes =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<p><code>tree</code> is a contrast tree object produced by <code>contrast()</code>. <code>nodes</code> is a
+vector of terminal node identifiers for the tree specifying the desired
+regions. The default is all terminal nodes.</p>
+<p>The output of <code>treesum()</code> is printed at the command line. It summarizes
+the sequence of splits producing each selected terminal node, one line
+per split. For a split on a numeric variable the line shows three
+quantities: the variable number, sign and split point value. If the sign
+is negative/positive the split point represents an upper/lower boundary.
+For splits on a categorical variable (factor) there is a variable
+number, sign and a subset of values (R internal representation). If the
+sign is positive the listed values are in the node whereas for a
+negative sign the complement of the listed values are in the node.</p>
+</div>
+<div id="getnodes" class="section level2">
+<h2><span class="header-section-number">2.5</span> <code>getnodes()</code></h2>
+<p>This procedure returns the terminal node identifier of the region
+containing selected observations</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">nx =<span class="st"> </span><span class="kw">getnodes</span>(tree, x)<span class="st">`</span></a></code></pre></div>
+<p><code>tree</code> is a tree model object output from <em>contrast</em>. <code>x</code> is an input
+predictor data matrix or data frame with same variables and structure
+input to <code>contrast()</code>. Rows are observations and columns are
+variables. Must be a numeric matrix or a data frame. The output of
+getnodes <code>nx</code> is a vector of tree terminal node identifiers (numbers)
+corresponding to each observation (row of <code>x</code>).</p>
+</div>
+<div id="lofcurve" class="section level2">
+<h2><span class="header-section-number">2.6</span> <code>lofcurve()</code></h2>
+<p>This procedure computes a lack-of-fit curve for a contrast tree.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">out =<span class="st"> </span><span class="kw">lofcurve</span>(tree, x, y, z, <span class="dt">doplot =</span> <span class="ot">TRUE</span>)<span class="st">`</span></a></code></pre></div>
+<p>The parameters <code>tree</code>, <code>x</code>, <code>y</code>, and <code>z</code> are the same as in <code>nodesum()</code>
+above. <code>doplot = TRUE/FALSE</code> <span class="math inline">\(\Rightarrow\)</span> do/don’t produce graphical plot. The
+output provides the plot points: <code>out$x</code>, the horizontal values;
+<code>out$y</code>, the vertical values.</p>
+</div>
+<div id="modtrast" class="section level2">
+<h2><span class="header-section-number">2.7</span> <code>modtrast()</code></h2>
+<p>This is the basic procedure that builds contrast and distribution
+<em>boosting</em> models.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">model =<span class="st"> </span><span class="kw">modtrast</span>(x, y, z, <span class="dt">tree.size =</span> <span class="dv">10</span>, <span class="dt">min.node =</span> <span class="dv">500</span>, <span class="dt">type =</span> ’dist’, <span class="dt">niter =</span> <span class="dv">100</span>)</a></code></pre></div>
+<p>The inputs <code>x, y, z, type, tree.size,</code> and <code>min.node</code> are the same as
+the corresponding input to <code>contrast()</code> above. <code>type</code> <span class="math inline">\(\in\)</span>
+{<code>&quot;diffmean&quot;, &quot;maxmean&quot;,&quot;prob&quot;,&quot;quant&quot;</code>} produces contrast boosting
+models for estimating the corresponding quantity (<span class="math inline">\(E(y\,|\,\mathbf{x})\)</span>,
+<span class="math inline">\(\Pr(y\,=1|\,\mathbf{x})\)</span>, or <span class="math inline">\(Q_{p}(y\,|\,\mathbf{x})\)</span>). For
+<code>type = &quot;quant&quot;</code>  the input parameter <code>quant</code> (see above) must be
+specified. For contrast boosting <code>x, y</code> are the input data and <code>z</code>
+represents initial values for the quantity being estimated.</p>
+<p><code>type = &quot;dist&quot;</code> produces a distribution boosting model for estimating
+the full distribution <span class="math inline">\(p_{y}(y\,|\,\mathbf{x)}\)</span> at each <span class="math inline">\(\mathbf{x}\)</span>.
+For this case the input <span class="math inline">\(z_{i}\)</span> for each observation <span class="math inline">\(i\)</span> is a random
+number drawn from a prespecified distribution
+<span class="math inline">\(p_{z}(z\,|\,\mathbf{x}_{i}\mathbf{)}\)</span> at each <span class="math inline">\(\mathbf{x}_{i}\)</span>. <code>niter</code>
+specifies the number of boosted trees produced.</p>
+</div>
+<div id="xval" class="section level2">
+<h2><span class="header-section-number">2.8</span> <code>xval()</code></h2>
+<p>This is a diagnostic for accessing the accuracy of models produced by
+<code>modtrast()</code> as a function of iteration number</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">out =<span class="st"> </span><span class="kw">xval</span>(model, x, y, z, <span class="dt">doplot =</span> ’first’, <span class="dt">col =</span> ’red’)</a></code></pre></div>
+<p><code>model</code> is a contrast/distribution boosted model produced by
+<code>modtrast()</code>. <code>x, y</code> and <code>z</code> represent data of the type used to
+construct the model usually based on test observations not used to
+build it. <code>doplot = ’first’</code> <span class="math inline">\(\Rightarrow\)</span> display plot. <code>doplot = ’next’</code> <span class="math inline">\(\Rightarrow\)</span> super impose graph on previously displayed plot.
+<code>doplot = ’none’</code> <span class="math inline">\(\Rightarrow\)</span> do not display plot. Outputs <code>out$x</code>
+and <code>out$y</code> return the plot points.</p>
+</div>
+<div id="predtrast" class="section level2">
+<h2><span class="header-section-number">2.9</span> <code>predtrast()</code></h2>
+<p>Produce predictions from <code>modtrast()</code> model
+(<code>type = &quot;diffmean&quot;, &quot;maxmean&quot;,&quot;prob</code>&quot; or <code>&quot;quant&quot;</code>) for new data.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">ypred =<span class="st"> </span><span class="kw">predtrast</span>(model, x, z, <span class="dt">num =</span> model<span class="op">$</span>niter)<span class="st">`</span></a></code></pre></div>
+<p><code>model</code> is a model object output from <code>modtrast()</code>. <code>x</code> and <code>z</code> are
+the <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span>-values for new data of the same type input to
+<code>modtrast()</code>. <code>num</code> is the number of trees used to compute model
+values. Default is the number contained in model as produced by
+<code>modtrast()</code>. The output <code>ypred</code> is a vector of predicted values for
+new data by the model.</p>
+</div>
+<div id="ydist" class="section level2">
+<h2><span class="header-section-number">2.10</span> <code>ydist()</code></h2>
+<p>This procedure computes distribution boosting estimates of the
+transformation <span class="math inline">\(\hat{y}=\hat{g}_{\mathbf{x}}(z\,)\)</span>, such that
+<span class="math inline">\(p_{\hat{y}}(\hat {y}\,|\,\mathbf{x)\simeq}\)</span> <span class="math inline">\(p_{y}(y\,|\,\mathbf{x)}\)</span> <em>(</em><code>type = &quot;dist&quot;</code>
+only).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">yhat =<span class="st"> </span><span class="kw">ydist</span>(model, x, z, <span class="dt">num =</span> model<span class="op">$</span>niter)</a></code></pre></div>
+<p><code>model</code> is a model object output from <code>modtrast()</code>. The input <code>x</code>
+represents the components of a <em>single</em> point <span class="math inline">\(\mathbf{x}\)</span> in
+predictor variable <span class="math inline">\(\mathbf{x}\)</span>-space. <code>z</code> is a vector of values to be
+transformed. These are usually the quantiles of the prespecified
+distribution <span class="math inline">\(p_{z}(z\,|\,\mathbf{x}_{i}\mathbf{)}\)</span> at <span class="math inline">\(\mathbf{x}\)</span>.
+<code>num</code> is number of trees used to compute model values. Default is the
+number contained in model as produced by <em>modtrast</em>. The output <code>yhat</code>
+contains the corresponding transformed <span class="math inline">\(z\)</span> - values.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="examples.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["conTree_tutorial.pdf", "conTree_tutorial.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
