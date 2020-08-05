@@ -24,7 +24,7 @@
 <meta name="author" content="Jerome H. Friedman" />
 
 
-<meta name="date" content="2020-07-27" />
+<meta name="date" content="2020-07-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -338,15 +338,13 @@ than those of GBL</p>
 <p>We next plot the lack-of-fit contrast curve for GBL using a 50 terminal
 node contrast tree</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="examples.html#cb22-1" aria-hidden="true"></a>tree =<span class="st"> </span><span class="kw">contrast</span>(xt[dx,], yt[dx], gblt, <span class="dt">type =</span> <span class="st">&#39;prob&#39;</span>, <span class="dt">tree.size =</span> <span class="dv">50</span>)</span>
-<span id="cb22-2"><a href="examples.html#cb22-2" aria-hidden="true"></a><span class="kw">lofcurve</span>(tree, xt[dxt,], yt[dxt], gblt[dxt], <span class="dt">doplot =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<span id="cb22-2"><a href="examples.html#cb22-2" aria-hidden="true"></a><span class="kw">lofcurve</span>(tree, xt[dxt,], yt[dxt], gblt[dxt], <span class="dt">doplot =</span> <span class="st">&#39;first&#39;</span>)</span></code></pre></div>
 <p>Next we add the corresponding curve for RF predicted probabilities</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="examples.html#cb23-1" aria-hidden="true"></a>tree =<span class="st"> </span><span class="kw">contrast</span>(xt[dx, ], yt[dx], rft[dx, <span class="dv">2</span>], <span class="dt">type =</span> <span class="st">&#39;prob&#39;</span>, <span class="dt">tree.size =</span> <span class="dv">50</span>)</span>
-<span id="cb23-2"><a href="examples.html#cb23-2" aria-hidden="true"></a>u =<span class="st"> </span><span class="kw">lofcurve</span>(tree, xt[dxt, ], yt[dxt], rft[dxt, <span class="dv">2</span>], <span class="dt">doplot =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb23-3"><a href="examples.html#cb23-3" aria-hidden="true"></a><span class="kw">lines</span>(u<span class="op">$</span>x, u<span class="op">$</span>y, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>)</span></code></pre></div>
+<span id="cb23-2"><a href="examples.html#cb23-2" aria-hidden="true"></a><span class="kw">lofcurve</span>(tree, xt[dxt, ], yt[dxt], rft[dxt, <span class="dv">2</span>], <span class="dt">doplot =</span> <span class="st">&#39;next&#39;</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p>And finally that for the GBP estimates</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="examples.html#cb24-1" aria-hidden="true"></a>tree =<span class="st"> </span><span class="kw">contrast</span>(xt[dx, ], yt[dx], gbpt[dx], <span class="dt">type =</span> <span class="st">&#39;prob&#39;</span>, <span class="dt">tree.size =</span> <span class="dv">50</span>)</span>
-<span id="cb24-2"><a href="examples.html#cb24-2" aria-hidden="true"></a>u =<span class="st"> </span><span class="kw">lofcurve</span>(tree, xt[dxt, ], yt[dxt], gbpt[dxt], <span class="dt">doplot =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb24-3"><a href="examples.html#cb24-3" aria-hidden="true"></a><span class="kw">lines</span>(u<span class="op">$</span>x, u<span class="op">$</span>y, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<span id="cb24-2"><a href="examples.html#cb24-2" aria-hidden="true"></a><span class="kw">lofcurve</span>(tree, xt[dxt, ], yt[dxt], gbpt[dxt], <span class="dt">doplot =</span> <span class="st">&#39;next&#39;</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:fig3"></span>
 <img src="conTree_tutorial_files/figure-html/fig3-1.png" alt="Lack-of-fit contrast curves for GBL (black), RF (blue), and GBP (red) for census income data." width="672" />
 <p class="caption">
@@ -552,11 +550,9 @@ test data. Results are shown in Figure <a href="examples.html#fig:fig10">3.10</a
 the residual bootstrap distribution shown in Figure <a href="examples.html#fig:fig8">3.8</a>.
 This is verified by the corresponding lack-of-fit contrast curves
 shown in Figure <a href="examples.html#fig:fig11">3.11</a> as produced by the commands</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="examples.html#cb54-1" aria-hidden="true"></a><span class="kw">lofcurve</span>(treezage, xage[dt, ], yage[dt], zage[dt])</span>
-<span id="cb54-2"><a href="examples.html#cb54-2" aria-hidden="true"></a>u =<span class="st"> </span><span class="kw">lofcurve</span>(treerbage, xage[dt, ], yage[dt], rbage[dt], <span class="dt">doplot =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb54-3"><a href="examples.html#cb54-3" aria-hidden="true"></a><span class="kw">lines</span>(u<span class="op">$</span>x, u<span class="op">$</span>y, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>)</span>
-<span id="cb54-4"><a href="examples.html#cb54-4" aria-hidden="true"></a>u =<span class="st"> </span><span class="kw">lofcurve</span>(treehrbage, xage[dt, ], yage[dt], hrbage, <span class="dt">doplot =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb54-5"><a href="examples.html#cb54-5" aria-hidden="true"></a><span class="kw">lines</span>(u<span class="op">$</span>x, u<span class="op">$</span>y, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="examples.html#cb54-1" aria-hidden="true"></a><span class="kw">lofcurve</span>(treezage, xage[dt, ], yage[dt], zage[dt], <span class="dt">doplot =</span> <span class="st">&#39;first&#39;</span>)</span>
+<span id="cb54-2"><a href="examples.html#cb54-2" aria-hidden="true"></a><span class="kw">lofcurve</span>(treerbage, xage[dt, ], yage[dt], rbage[dt], <span class="dt">doplot =</span> <span class="st">&#39;next&#39;</span>, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb54-3"><a href="examples.html#cb54-3" aria-hidden="true"></a><span class="kw">lofcurve</span>(treehrbage, xage[dt, ], yage[dt], hrbage, <span class="dt">doplot =</span> <span class="st">&#39;next&#39;</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:fig11"></span>
 <img src="conTree_tutorial_files/figure-html/fig11-1.png" alt="Lack-of-fit contrast curves" width="672" />
 <p class="caption">

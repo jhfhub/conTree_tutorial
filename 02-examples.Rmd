@@ -133,34 +133,30 @@ node contrast tree
 
 ```{r, eval = FALSE}
 tree = contrast(xt[dx,], yt[dx], gblt, type = 'prob', tree.size = 50)
-lofcurve(tree, xt[dxt,], yt[dxt], gblt[dxt], doplot = TRUE)
+lofcurve(tree, xt[dxt,], yt[dxt], gblt[dxt], doplot = 'first')
 ```
 
 Next we add the corresponding curve for RF predicted probabilities
 
 ```{r, eval = FALSE}
 tree = contrast(xt[dx, ], yt[dx], rft[dx, 2], type = 'prob', tree.size = 50)
-u = lofcurve(tree, xt[dxt, ], yt[dxt], rft[dxt, 2], doplot = FALSE)
-lines(u$x, u$y, col = 'blue')
+lofcurve(tree, xt[dxt, ], yt[dxt], rft[dxt, 2], doplot = 'next', col = "blue")
 ```
 
 And finally that for the GBP estimates
 
 ```{r, eval = FALSE}
 tree = contrast(xt[dx, ], yt[dx], gbpt[dx], type = 'prob', tree.size = 50)
-u = lofcurve(tree, xt[dxt, ], yt[dxt], gbpt[dxt], doplot = FALSE)
-lines(u$x, u$y, col = 'red')
+lofcurve(tree, xt[dxt, ], yt[dxt], gbpt[dxt], doplot = 'next', col = "red")
 ```
 
 ```{r fig3, echo = FALSE, fig = TRUE, fig.cap = "Lack-of-fit contrast curves for GBL (black), RF (blue), and GBP (red) for census income data."}
 tree = contrast(xt[dx,], yt[dx], gblt, type = 'prob', tree.size = 50)
-lofcurve(tree, xt[dxt,], yt[dxt], gblt[dxt], doplot = TRUE)
+lofcurve(tree, xt[dxt,], yt[dxt], gblt[dxt], doplot = 'first')
 tree = contrast(xt[dx, ], yt[dx], rft[dx, 2], type = 'prob', tree.size = 50)
-u = lofcurve(tree, xt[dxt, ], yt[dxt], rft[dxt, 2], doplot = FALSE)
-lines(u$x, u$y, col = 'blue')
+lofcurve(tree, xt[dxt, ], yt[dxt], rft[dxt, 2], doplot = 'next', col = "blue")
 tree = contrast(xt[dx, ], yt[dx], gbpt[dx], type = 'prob', tree.size = 50)
-u = lofcurve(tree, xt[dxt, ], yt[dxt], gbpt[dxt], doplot = FALSE)
-lines(u$x, u$y, col = 'red')
+lofcurve(tree, xt[dxt, ], yt[dxt], gbpt[dxt], doplot = 'next', col = "red")
 ```
 
 The result is shown in Figure \@ref(fig:fig3).
@@ -381,11 +377,9 @@ This is verified by the corresponding lack-of-fit contrast curves
 shown in Figure \@ref(fig:fig11) as produced by the commands
 
 ```{r fig11, fig = TRUE, fig.cap = "Lack-of-fit contrast curves"}
-lofcurve(treezage, xage[dt, ], yage[dt], zage[dt])
-u = lofcurve(treerbage, xage[dt, ], yage[dt], rbage[dt], doplot = FALSE)
-lines(u$x, u$y, col = 'blue')
-u = lofcurve(treehrbage, xage[dt, ], yage[dt], hrbage, doplot = FALSE)
-lines(u$x, u$y, col = 'red')
+lofcurve(treezage, xage[dt, ], yage[dt], zage[dt], doplot = 'first')
+lofcurve(treerbage, xage[dt, ], yage[dt], rbage[dt], doplot = 'next', col = "blue")
+lofcurve(treehrbage, xage[dt, ], yage[dt], hrbage, doplot = 'next', col = "red")
 ```
 
 The lack-of-fit contrast curves are plotted for the three estimates of
