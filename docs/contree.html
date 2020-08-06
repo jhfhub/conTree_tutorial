@@ -24,7 +24,7 @@
 <meta name="author" content="Jerome H. Friedman" />
 
 
-<meta name="date" content="2020-07-30" />
+<meta name="date" content="2020-08-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,6 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="examples.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -218,7 +217,7 @@ the corresponding pooled outcome values and <code>z</code> is a vector of length
 <p>The parameter <code>type</code> controls the nature of the contrast by specifying
 the discrepancy measure between <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> to be used in each region
 <span class="math inline">\(R_{m}\)</span> to build the tree. For <code>mode = "onesamp"</code>, there are currently
-six possibilities for <code>type:</code></p>
+seven possibilities for <code>type</code>:</p>
 <ul>
 <li><p><code>type = "diff"</code>. Contrast joint paired values of <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> using
 discrepancy
@@ -270,8 +269,7 @@ where <span class="math inline">\(t_{(i)}\)</span> is the <span class="math inli
 in sorted order, and <span class="math inline">\(\hat{F}_{y}\)</span> and <span class="math inline">\(\hat{F}_{z}\)</span> are the
 respective empirical cumulative distributions of <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> in the
 region.</p></li>
-</ul>
-<p><code>type = "class"</code>. Misclassification risk. Here <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(z_{i}\)</span>
+<li><p><code>type = "class"</code>. Misclassification risk. Here <span class="math inline">\(y_{i}\)</span> and <span class="math inline">\(z_{i}\)</span>
 are class labels (<code>in 1:nclass</code>) for each <span class="math inline">\(i\)</span>th observation. Region
 discrepancy is prediction risk
 <span class="math display">\[\begin{equation}d_{m}=\frac{1}{N_{m}}\sum_{\mathbf{x}_{i}\in
@@ -281,7 +279,8 @@ where <span class="math inline">\(C(y,z)\)</span> is the cost of predicting clas
 class <span class="math inline">\(y\)</span>. In this case there are two additional arguments that need to
 be specified: <code>nclass</code> the number of classes (default <code>nclass = 2</code>), and
 <span class="math inline">\(C\)</span> an <code>nclass</code> by <code>nclass</code> misclassification cost matrix (default
-<span class="math inline">\(C[i,j] = I(i\neq j)\)</span>).</p>
+<span class="math inline">\(C[i,j] = I(i\neq j)\)</span>).</p></li>
+</ul>
 <p>For <code>mode = "twosamp"</code> there are currently three possibilities for
 <code>type</code>:</p>
 <ul>
@@ -291,9 +290,9 @@ means of two samples.</p></li>
 <li><p><code>type = "maxmean"</code>. Contrast signed difference between <span class="math inline">\(y\)</span> -
 means of two samples.</p></li>
 </ul>
-<p><code>tree.size</code> is the specified maximum number of regions (terminal notes)
-of the tree and <code>min.node</code> is the minimum number of observations allowed
-in each region.</p>
+<p>Argument <code>tree.size</code> is the specified maximum number of regions
+(terminal nodes) of the tree and <code>min.node</code> is the minimum number of
+observations allowed in each region.</p>
 <p>The output of <code>contrast()</code> is a contrast tree object <code>tree</code> to be used
 as input to interpretational procedures described below.</p>
 </div>
