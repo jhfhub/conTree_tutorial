@@ -40,7 +40,7 @@ $\Rightarrow(\mathbf{x}_{i},y_{i})$ in second sample.
 The parameter `type` controls the nature of the contrast by specifying
 the discrepancy measure between $y$ and $z$ to be used in each region
 $R_{m}$ to build the tree. For `mode = "onesamp"`, there are currently
-six possibilities for `type:`
+seven possibilities for `type`:
 
 - `type = "diff"`. Contrast joint paired values of $y$ and $z$ using
 discrepancy
@@ -98,7 +98,7 @@ in sorted order, and $\hat{F}_{y}$ and $\hat{F}_{z}$ are the
 respective empirical cumulative distributions of $y$ and $z$ in the
 region.
 
-`type = "class"`. Misclassification risk. Here $y_{i}$ and $z_{i}$
+- `type = "class"`. Misclassification risk. Here $y_{i}$ and $z_{i}$
 are class labels (`in 1:nclass`) for each $i$th observation. Region
 discrepancy is prediction risk
 \begin{equation}d_{m}=\frac{1}{N_{m}}\sum_{\mathbf{x}_{i}\in
@@ -122,9 +122,9 @@ means of two samples.
 means of two samples.
 
 
-`tree.size` is the specified maximum number of regions (terminal notes)
-of the tree and `min.node` is the minimum number of observations allowed
-in each region.
+Argument `tree.size` is the specified maximum number of regions
+(terminal nodes) of the tree and `min.node` is the minimum number of
+observations allowed in each region.
 
 
 The output of `contrast()` is a contrast tree object `tree` to be used
