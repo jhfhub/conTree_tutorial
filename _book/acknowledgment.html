@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 Acknowledgment | Contrast Trees and Distribution Boosting in R</title>
   <meta name="description" content="This is a tutorial on the R package conTree." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Acknowledgment | Contrast Trees and Distribution Boosting in R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a tutorial on the R package conTree." />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jerome H. Friedman" />
 
 
-<meta name="date" content="2020-08-06" />
+<meta name="date" content="2022-03-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +32,8 @@
   
 <link rel="prev" href="examples.html"/>
 <link rel="next" href="references.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,13 +49,16 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -117,6 +119,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -133,36 +158,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Contrast Trees and Distribution Boosting in R</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees</a></li>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees<span></span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting<span></span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting<span></span></a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code></a>
+<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code><span></span></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code></a></li>
-<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code></a></li>
-<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code></a></li>
-<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code></a></li>
-<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code></a></li>
-<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code></a></li>
-<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code></a></li>
-<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code></a></li>
-<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code></a></li>
-<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code></a></li>
+<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code><span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code><span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code><span></span></a></li>
+<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code><span></span></a></li>
+<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code><span></span></a></li>
+<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code><span></span></a></li>
+<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code><span></span></a></li>
+<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code><span></span></a></li>
+<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code><span></span></a></li>
+<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code><span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples</a>
+<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation</a></li>
-<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting</a></li>
-<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions</a></li>
-<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees</a></li>
-<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information</a></li>
+<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting<span></span></a></li>
+<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions<span></span></a></li>
+<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees<span></span></a></li>
+<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment<span></span></a></li>
+<li><a href="references.html#references">References<span></span></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -183,8 +208,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="acknowledgment" class="section level1" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Acknowledgment</h1>
+<div id="acknowledgment" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Acknowledgment<a href="acknowledgment.html#acknowledgment" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The crucial contribution of Balasubramanian Narasimhan in constructing
 the <code>conTree</code> R package is gratefully acknowledged.</p>
 
@@ -199,7 +224,6 @@ the <code>conTree</code> R package is gratefully acknowledged.</p>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -218,6 +242,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -238,6 +263,10 @@ gitbook.start({
 "text": null
 },
 "download": ["conTree_tutorial.pdf", "conTree_tutorial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

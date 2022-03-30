@@ -4,8 +4,7 @@ Here we provide examples of using different aspects of the `conTree`
 package as applied to several data sets. These examples are intended to
 illustrate some of the basic features, operation and control of the
 package procedures. See the full documentation for more advanced
-options. In this note lines beginning with " $>$ " are to be interpreted
-as R commands.
+options.
 
 ## Conditional probability estimation
 

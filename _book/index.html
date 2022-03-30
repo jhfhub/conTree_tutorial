@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Contrast Trees and Distribution Boosting in R</title>
   <meta name="description" content="This is a tutorial on the R package conTree." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Contrast Trees and Distribution Boosting in R" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This is a tutorial on the R package conTree." />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Jerome H. Friedman" />
 
 
-<meta name="date" content="2020-08-06" />
+<meta name="date" content="2022-03-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +32,8 @@
   
 
 <link rel="next" href="contree.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,13 +49,16 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -117,6 +119,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -133,36 +158,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Contrast Trees and Distribution Boosting in R</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees</a></li>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees<span></span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting<span></span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting<span></span></a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code></a>
+<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code><span></span></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code></a></li>
-<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code></a></li>
-<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code></a></li>
-<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code></a></li>
-<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code></a></li>
-<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code></a></li>
-<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code></a></li>
-<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code></a></li>
-<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code></a></li>
-<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code></a></li>
+<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code><span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code><span></span></a></li>
+<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code><span></span></a></li>
+<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code><span></span></a></li>
+<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code><span></span></a></li>
+<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code><span></span></a></li>
+<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code><span></span></a></li>
+<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code><span></span></a></li>
+<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code><span></span></a></li>
+<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code><span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples</a>
+<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation</a></li>
-<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting</a></li>
-<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions</a></li>
-<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees</a></li>
-<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information</a></li>
+<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting<span></span></a></li>
+<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions<span></span></a></li>
+<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees<span></span></a></li>
+<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment<span></span></a></li>
+<li><a href="references.html#references">References<span></span></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -186,21 +211,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Contrast Trees and Distribution Boosting in R</h1>
 <p class="author"><em>Jerome H. Friedman</em></p>
-<p class="date"><em>2020-08-06</em></p>
+<p class="date"><em>2022-03-29</em></p>
 </div>
-<div id="introduction" class="section level1" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
+<div id="introduction" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This tutorial describes the R package conTree that implements the
 contrast tree and distribution boosting procedures described in
-<span class="citation">Friedman (<a href="#ref-FriedmanArxiv" role="doc-biblioref">2019</a>)</span> and <span class="citation">Friedman (<a href="#ref-FriedmanPNAS" role="doc-biblioref">2020</a>)</span>. A brief summary of the methodology
+<span class="citation">J. Friedman (<a href="#ref-FriedmanArxiv" role="doc-biblioref">2019</a>)</span> and <span class="citation">J. H. Friedman (<a href="#ref-FriedmanPNAS" role="doc-biblioref">2020</a>)</span>. A brief summary of the methodology
 is provided. This is followed by demonstrations of the application of
 some of the package features on data examples. A more detailed
 description of all procedures is included with the full package
-documentation. Some familiarity with <span class="citation">Friedman (<a href="#ref-FriedmanArxiv" role="doc-biblioref">2019</a>)</span> and the
+documentation. Some familiarity with <span class="citation">J. Friedman (<a href="#ref-FriedmanArxiv" role="doc-biblioref">2019</a>)</span> and the
 statistical package R is assumed. R can be downloaded from
 <a href="https://www.r-project.org">CRAN</a>.</p>
-<div id="contrast-trees" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Contrast trees</h2>
+<div id="contrast-trees" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Contrast trees<a href="index.html#contrast-trees" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Contrast trees are used to assess the accuracy of many types of machine
 learning estimates that are not amenable to standard validation
 techniques. These include properties of the conditional distribution
@@ -234,8 +259,8 @@ distribution of <span class="math inline">\(y\)</span> is inconsistent with the 
 lack-of-fit of the model to the data in those regions is indicated. A
 measure of such lack-of-fit is the size of the discrepancy.</p>
 </div>
-<div id="contrast-boosting" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Contrast boosting</h2>
+<div id="contrast-boosting" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Contrast boosting<a href="index.html#contrast-boosting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If the regions <span class="math inline">\(\{R_{m}^{(1)}\}_{1}^{M}\)</span> produced by a contrast tree
 uncover lack-of-fit, boosted contrast trees can often improve prediction
 accuracy. The predictions <span class="math inline">\(z\)</span> in each separate region <span class="math inline">\(R_{m}^{(1)}\)</span> of
@@ -258,8 +283,8 @@ specified initial value <span class="math inline">\(z(\mathbf{x})\)</span> the e
 \hat{z}(\mathbf{x})=z(\mathbf{x})+\sum_{k=1}^{K}\delta_{m_{k}(\mathbf{x})}^{(k)}\text{.} \tag{1.1}
 \end{equation}\]</span></p>
 </div>
-<div id="distribution-boosting" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Distribution boosting</h2>
+<div id="distribution-boosting" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Distribution boosting<a href="index.html#distribution-boosting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span> are both considered to be random variables
 independently generated from respective distributions
 <span class="math inline">\(p_{y}(y\,|\,\mathbf{x)}\)</span> and <span class="math inline">\(p_{z}(z\,|\,\mathbf{x})\)</span>. The purpose of
@@ -293,8 +318,8 @@ g_{m_{1}(\mathbf{x})}^{(1)}(z))). \tag{1.3}
 output of each successive tree is further transformed by the next tree
 in the boosted sequence.</p>
 </div>
-<div id="two-sample-trees" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Two-sample trees</h2>
+<div id="two-sample-trees" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Two-sample trees<a href="index.html#two-sample-trees" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Contrast trees are applied to a single data set where each observation
 has two outcomes <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>, and a single set of predictor variables
 <span class="math inline">\(\mathbf{x}\)</span>. A similar methodology can be applied to two–sample
@@ -310,13 +335,13 @@ properties of those distributions, most differ.</p>
 
 </div>
 </div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-FriedmanArxiv">
-<p>Friedman, Jerome. 2019. “Contrast Trees and Distribution Boosting.” <em>arXiv Preprint arXiv:1912.03785v1</em>. <a href="https://arxiv.org/abs/1912.03785">https://arxiv.org/abs/1912.03785</a>.</p>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-FriedmanArxiv" class="csl-entry">
+Friedman, Jerome. 2019. <span>“Contrast Trees and Distribution Boosting.”</span> <em>arXiv Preprint arXiv:1912.03785v1</em>. <a href="https://arxiv.org/abs/1912.03785">https://arxiv.org/abs/1912.03785</a>.
 </div>
-<div id="ref-FriedmanPNAS">
-<p>Friedman, Jerome. 2020. “Contrast Trees and Distribution Boosting.” <em>PNAS (to Appear)</em>.</p>
+<div id="ref-FriedmanPNAS" class="csl-entry">
+Friedman, Jerome H. 2020. <span>“Contrast Trees and Distribution Boosting.”</span> <em>Proceedings of the National Academy of Sciences</em>. <a href="https://doi.org/10.1073/pnas.1921562117">https://doi.org/10.1073/pnas.1921562117</a>.
 </div>
 </div>
             </section>
@@ -329,7 +354,6 @@ properties of those distributions, most differ.</p>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -348,6 +372,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -368,6 +393,10 @@ gitbook.start({
 "text": null
 },
 "download": ["conTree_tutorial.pdf", "conTree_tutorial.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

@@ -39,8 +39,10 @@ $\Rightarrow(\mathbf{x}_{i},y_{i})$ in second sample.
 
 The parameter `type` controls the nature of the contrast by specifying
 the discrepancy measure between $y$ and $z$ to be used in each region
-$R_{m}$ to build the tree. For `mode = "onesamp"`, there are currently
-seven possibilities for `type`:
+$R_{m}$ to build the tree. It can be a user-specified discrepancy
+function---more on that below---or one of the following character
+strings. For `mode = "onesamp"`, there are currently seven
+possibilities for `type`:
 
 - `type = "diff"`. Contrast joint paired values of $y$ and $z$ using
 discrepancy
@@ -121,11 +123,26 @@ means of two samples.
 - `type = "maxmean"`. Contrast signed difference between $y$ -
 means of two samples.
 
+If `type` is a function, it must be a user-defined R function of three
+arguments yielding a scalar result. For example, if we define the function
+```{r, eval = FALSE}
+my_disc <- function(y, z, w) {
+    sum((w / sum(w)) * abs(y -z))
+}
+```
+then, using `type = my_disc` will call the R function `my_disc` to
+compute the discrepancy, which in this case is the R version of the
+`type = "diff"` discrepancy implemented in Fortran. Note that the
+Fortran implementations make use of several parameters besides just
+the three arguments `y`, `z`, `w` above and so results may
+differ. (Those intent on reproducing Fortran results exactly may do so
+by examining the Fortran source and making use of functions
+`onesample_parameters()` and `twosample_parameters()`, a topic beyond
+the scope of this tutorial.)
 
 Argument `tree.size` is the specified maximum number of regions
 (terminal nodes) of the tree and `min.node` is the minimum number of
 observations allowed in each region.
-
 
 The output of `contrast()` is a contrast tree object `tree` to be used
 as input to interpretational procedures described below.
@@ -171,7 +188,9 @@ The parameters `tree`, `x`, `y`, and `z` are the same as in
 identifiers specifying the regions to be displayed . The default is
 all terminal nodes except for `type = "dist"` or `type = "diff"` for
 which the default is the nine highest discrepancy regions. `pts =
-TRUE/FALSE` will show points as circles/points (`type = ’dist’` only).
+TRUE/FALSE` will show points as circles/points (`type = ’dist’`
+only). Note that `nodeplots()` does not work for user-defined
+discrepancies. 
 
 The output graphical representations of terminal node discrepancies
 depends on tree type. `type = "dist" `produces QQ--plots of $y$ vs. $z$
@@ -253,13 +272,15 @@ model = modtrast(x, y, z, tree.size = 10, min.node = 500, type = ’dist’, nit
 ```
 
 The inputs `x, y, z, type, tree.size,` and `min.node` are the same as
-the corresponding input to `contrast()` above. `type` $\in$
-{`"diffmean", "maxmean","prob","quant"`} produces contrast boosting
-models for estimating the corresponding quantity ($E(y\,|\,\mathbf{x})$,
-$\Pr(y\,=1|\,\mathbf{x})$, or $Q_{p}(y\,|\,\mathbf{x})$). For
-`type = "quant"`  the input parameter `quant` (see above) must be
-specified. For contrast boosting `x, y` are the input data and `z`
-represents initial values for the quantity being estimated.
+the corresponding input to `contrast()` above, but cannot be a
+user-defined discrepancy function implemented in R. `type` $\in$
+{`"diffmean", "maxmean", "prob", "quant"`} produces contrast boosting
+models for estimating the corresponding quantity
+($E(y\,|\,\mathbf{x})$, $\Pr(y\,=1|\,\mathbf{x})$, or
+$Q_{p}(y\,|\,\mathbf{x})$). For `type = "quant"`  the input parameter
+`quant` (see above) must be specified. For contrast boosting `x, y`
+are the input data and `z` represents initial values for the quantity
+being estimated.
 
 `type = "dist"` produces a distribution boosting model for estimating
 the full distribution $p_{y}(y\,|\,\mathbf{x)}$ at each $\mathbf{x}$.
