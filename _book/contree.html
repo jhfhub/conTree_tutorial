@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 conTree | Contrast Trees and Distribution Boosting in R</title>
   <meta name="description" content="This is a tutorial on the R package conTree." />
-  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 conTree | Contrast Trees and Distribution Boosting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jerome H. Friedman" />
 
 
-<meta name="date" content="2022-03-29" />
+<meta name="date" content="2023-06-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -158,36 +162,36 @@ div.csl-indent {
 <li><a href="./">Contrast Trees and Distribution Boosting in R</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees<span></span></a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting<span></span></a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting<span></span></a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees<span></span></a></li>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code><span></span></a>
+<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code><span></span></a></li>
-<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code><span></span></a></li>
-<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code><span></span></a></li>
-<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code><span></span></a></li>
-<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code><span></span></a></li>
-<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code><span></span></a></li>
-<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code><span></span></a></li>
-<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code><span></span></a></li>
-<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code><span></span></a></li>
-<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code><span></span></a></li>
+<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code></a></li>
+<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code></a></li>
+<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code></a></li>
+<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code></a></li>
+<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code></a></li>
+<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code></a></li>
+<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code></a></li>
+<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code></a></li>
+<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code></a></li>
+<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples<span></span></a>
+<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation<span></span></a></li>
-<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting<span></span></a></li>
-<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions<span></span></a></li>
-<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees<span></span></a></li>
-<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information<span></span></a></li>
+<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation</a></li>
+<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting</a></li>
+<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions</a></li>
+<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees</a></li>
+<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment<span></span></a></li>
-<li><a href="references.html#references">References<span></span></a></li>
+<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -224,7 +228,7 @@ principal procedures for building and interpreting contrast trees are
 <div id="contrast" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> <code>contrast()</code><a href="contree.html#contrast" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This is the central procedure that builds contrast trees:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="contree.html#cb1-1" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">=</span> <span class="fu">contrast</span>(x, y, z, <span class="at">mode =</span> <span class="st">&quot;onesamp&quot;</span>, <span class="at">type =</span> <span class="st">&quot;dist&quot;</span>, <span class="at">tree.size =</span> <span class="dv">10</span>, <span class="at">min.node =</span> <span class="dv">500</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="contree.html#cb1-1" tabindex="-1"></a>tree <span class="ot">=</span> <span class="fu">contrast</span>(x, y, z, <span class="at">mode =</span> <span class="st">&quot;onesamp&quot;</span>, <span class="at">type =</span> <span class="st">&quot;dist&quot;</span>, <span class="at">tree.size =</span> <span class="dv">10</span>, <span class="at">min.node =</span> <span class="dv">500</span>)</span></code></pre></div>
 <p>The important arguments are: <code>x</code> a <span class="math inline">\(n\times p\)</span> training input
 predictor variable data matrix or data frame. Rows are the <span class="math inline">\(n\)</span> -
 observations and columns are <span class="math inline">\(p\)</span> variables. Must be a numeric matrix
@@ -320,9 +324,9 @@ means of two samples.</p></li>
 </ul>
 <p>If <code>type</code> is a function, it must be a user-defined R function of three
 arguments yielding a scalar result. For example, if we define the function</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="contree.html#cb2-1" aria-hidden="true" tabindex="-1"></a>my_disc <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, w) {</span>
-<span id="cb2-2"><a href="contree.html#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>((w <span class="sc">/</span> <span class="fu">sum</span>(w)) <span class="sc">*</span> <span class="fu">abs</span>(y <span class="sc">-</span>z))</span>
-<span id="cb2-3"><a href="contree.html#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="contree.html#cb2-1" tabindex="-1"></a>my_disc <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, w) {</span>
+<span id="cb2-2"><a href="contree.html#cb2-2" tabindex="-1"></a>    <span class="fu">sum</span>((w <span class="sc">/</span> <span class="fu">sum</span>(w)) <span class="sc">*</span> <span class="fu">abs</span>(y <span class="sc">-</span>z))</span>
+<span id="cb2-3"><a href="contree.html#cb2-3" tabindex="-1"></a>}</span></code></pre></div>
 <p>then, using <code>type = my_disc</code> will call the R function <code>my_disc</code> to
 compute the discrepancy, which in this case is the R version of the
 <code>type = "diff"</code> discrepancy implemented in Fortran. Note that the
@@ -342,7 +346,7 @@ as input to interpretational procedures described below.</p>
 <h2><span class="header-section-number">2.2</span> <code>nodesum()</code><a href="contree.html#nodesum" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This procedure produces a summary of the regions produced by a contrast
 tree:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="contree.html#cb3-1" aria-hidden="true" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">nodesum</span>(tree, x, y, z)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="contree.html#cb3-1" tabindex="-1"></a>u <span class="ot">=</span> <span class="fu">nodesum</span>(tree, x, y, z)</span></code></pre></div>
 <p>The important arguments are: <code>tree</code>, a contrast tree object produced by
 <code>contrast()</code>. <code>x</code> is a <span class="math inline">\(n\times p\)</span> predictor variable data matrix or data
 frame. Rows are <span class="math inline">\(n\)</span> - observations and columns are <span class="math inline">\(p\)</span> variables. Must
@@ -363,7 +367,7 @@ discrepancy averaged over all terminal nodes.</p>
 <h2><span class="header-section-number">2.3</span> <code>nodeplots()</code><a href="contree.html#nodeplots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This procedure produces a graphical summary of the regions comprising a
 contrast tree:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="contree.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nodeplots</span>(tree, x, y, z, <span class="at">nodes =</span> <span class="cn">NULL</span>, <span class="at">pts =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="contree.html#cb4-1" tabindex="-1"></a><span class="fu">nodeplots</span>(tree, x, y, z, <span class="at">nodes =</span> <span class="cn">NULL</span>, <span class="at">pts =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>The parameters <code>tree</code>, <code>x</code>, <code>y</code>, and <code>z</code> are the same as in
 <code>nodesum()</code> above. <code>nodes</code> is a vector of tree terminal node
 identifiers specifying the regions to be displayed . The default is
@@ -393,7 +397,7 @@ each terminal node.</p>
 <h2><span class="header-section-number">2.4</span> <code>treesum()</code><a href="contree.html#treesum" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This procedure prints the <span class="math inline">\(\mathbf{x}\)</span>-region boundaries for selected
 terminal nodes of a contrast tree</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="contree.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">treesum</span>(tree, <span class="at">nodes =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="contree.html#cb5-1" tabindex="-1"></a><span class="fu">treesum</span>(tree, <span class="at">nodes =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <p><code>tree</code> is a contrast tree object produced by <code>contrast()</code>. <code>nodes</code> is a
 vector of terminal node identifiers for the tree specifying the desired
 regions. The default is all terminal nodes.</p>
@@ -411,7 +415,7 @@ negative sign the complement of the listed values are in the node.</p>
 <h2><span class="header-section-number">2.5</span> <code>getnodes()</code><a href="contree.html#getnodes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This procedure returns the terminal node identifier of the region
 containing selected observations</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="contree.html#cb6-1" aria-hidden="true" tabindex="-1"></a>nx <span class="ot">=</span> <span class="fu">getnodes</span>(tree, x)<span class="st">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="contree.html#cb6-1" tabindex="-1"></a>nx <span class="ot">=</span> <span class="fu">getnodes</span>(tree, x)<span class="st">`</span></span></code></pre></div>
 <p><code>tree</code> is a tree model object output from <em>contrast</em>. <code>x</code> is an input
 predictor data matrix or data frame with same variables and structure
 input to <code>contrast()</code>. Rows are observations and columns are
@@ -422,7 +426,7 @@ corresponding to each observation (row of <code>x</code>).</p>
 <div id="lofcurve" class="section level2 hasAnchor" number="2.6">
 <h2><span class="header-section-number">2.6</span> <code>lofcurve()</code><a href="contree.html#lofcurve" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This procedure computes a lack-of-fit curve for a contrast tree.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="contree.html#cb7-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">=</span> <span class="fu">lofcurve</span>(tree, x, y, z, <span class="at">doplot =</span> <span class="cn">TRUE</span>)<span class="st">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="contree.html#cb7-1" tabindex="-1"></a>out <span class="ot">=</span> <span class="fu">lofcurve</span>(tree, x, y, z, <span class="at">doplot =</span> <span class="cn">TRUE</span>)<span class="st">`</span></span></code></pre></div>
 <p>The parameters <code>tree</code>, <code>x</code>, <code>y</code>, and <code>z</code> are the same as in <code>nodesum()</code>
 above. <code>doplot = TRUE/FALSE</code> <span class="math inline">\(\Rightarrow\)</span> do/don’t produce graphical plot. The
 output provides the plot points: <code>out$x</code>, the horizontal values;
@@ -432,7 +436,7 @@ output provides the plot points: <code>out$x</code>, the horizontal values;
 <h2><span class="header-section-number">2.7</span> <code>modtrast()</code><a href="contree.html#modtrast" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This is the basic procedure that builds contrast and distribution
 <em>boosting</em> models.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="contree.html#cb8-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">modtrast</span>(x, y, z, <span class="at">tree.size =</span> <span class="dv">10</span>, <span class="at">min.node =</span> <span class="dv">500</span>, <span class="at">type =</span> ’dist’, <span class="at">niter =</span> <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="contree.html#cb8-1" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">modtrast</span>(x, y, z, <span class="at">tree.size =</span> <span class="dv">10</span>, <span class="at">min.node =</span> <span class="dv">500</span>, <span class="at">type =</span> ’dist’, <span class="at">niter =</span> <span class="dv">100</span>)</span></code></pre></div>
 <p>The inputs <code>x, y, z, type, tree.size,</code> and <code>min.node</code> are the same as
 the corresponding input to <code>contrast()</code> above, but cannot be a
 user-defined discrepancy function implemented in R. <code>type</code> <span class="math inline">\(\in\)</span>
@@ -454,7 +458,7 @@ specifies the number of boosted trees produced.</p>
 <h2><span class="header-section-number">2.8</span> <code>xval()</code><a href="contree.html#xval" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This is a diagnostic for accessing the accuracy of models produced by
 <code>modtrast()</code> as a function of iteration number</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="contree.html#cb9-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">=</span> <span class="fu">xval</span>(model, x, y, z, <span class="at">doplot =</span> ’first’, <span class="at">col =</span> ’red’)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="contree.html#cb9-1" tabindex="-1"></a>out <span class="ot">=</span> <span class="fu">xval</span>(model, x, y, z, <span class="at">doplot =</span> ’first’, <span class="at">col =</span> ’red’)</span></code></pre></div>
 <p><code>model</code> is a contrast/distribution boosted model produced by
 <code>modtrast()</code>. <code>x, y</code> and <code>z</code> represent data of the type used to
 construct the model usually based on test observations not used to
@@ -466,7 +470,7 @@ and <code>out$y</code> return the plot points.</p>
 <h2><span class="header-section-number">2.9</span> <code>predtrast()</code><a href="contree.html#predtrast" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Produce predictions from <code>modtrast()</code> model
 (<code>type = "diffmean", "maxmean","prob</code>" or <code>"quant"</code>) for new data.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="contree.html#cb10-1" aria-hidden="true" tabindex="-1"></a>ypred <span class="ot">=</span> <span class="fu">predtrast</span>(model, x, z, <span class="at">num =</span> model<span class="sc">$</span>niter)<span class="st">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="contree.html#cb10-1" tabindex="-1"></a>ypred <span class="ot">=</span> <span class="fu">predtrast</span>(model, x, z, <span class="at">num =</span> model<span class="sc">$</span>niter)<span class="st">`</span></span></code></pre></div>
 <p><code>model</code> is a model object output from <code>modtrast()</code>. <code>x</code> and <code>z</code> are
 the <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span>-values for new data of the same type input to
 <code>modtrast()</code>. <code>num</code> is the number of trees used to compute model
@@ -480,7 +484,7 @@ new data by the model.</p>
 transformation <span class="math inline">\(\hat{y}=\hat{g}_{\mathbf{x}}(z\,)\)</span>, such that
 <span class="math inline">\(p_{\hat{y}}(\hat {y}\,|\,\mathbf{x)\simeq}\)</span> <span class="math inline">\(p_{y}(y\,|\,\mathbf{x)}\)</span> <em>(</em><code>type = "dist"</code>
 only).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="contree.html#cb11-1" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">=</span> <span class="fu">ydist</span>(model, x, z, <span class="at">num =</span> model<span class="sc">$</span>niter)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="contree.html#cb11-1" tabindex="-1"></a>yhat <span class="ot">=</span> <span class="fu">ydist</span>(model, x, z, <span class="at">num =</span> model<span class="sc">$</span>niter)</span></code></pre></div>
 <p><code>model</code> is a model object output from <code>modtrast()</code>. The input <code>x</code>
 represents the components of a <em>single</em> point <span class="math inline">\(\mathbf{x}\)</span> in
 predictor variable <span class="math inline">\(\mathbf{x}\)</span>-space. <code>z</code> is a vector of values to be
@@ -558,7 +562,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

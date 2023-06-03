@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Page not found | Contrast Trees and Distribution Boosting in R</title>
   <meta name="description" content="This is a tutorial on the R package conTree." />
-  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Page not found | Contrast Trees and Distribution Boosting in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Jerome H. Friedman" />
 
 
-<meta name="date" content="2022-03-29" />
+<meta name="date" content="2023-06-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -158,36 +162,36 @@ div.csl-indent {
 <li><a href="./">Contrast Trees and Distribution Boosting in R</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees<span></span></a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting<span></span></a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting<span></span></a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees<span></span></a></li>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#contrast-trees"><i class="fa fa-check"></i><b>1.1</b> Contrast trees</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#contrast-boosting"><i class="fa fa-check"></i><b>1.2</b> Contrast boosting</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#distribution-boosting"><i class="fa fa-check"></i><b>1.3</b> Distribution boosting</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#two-sample-trees"><i class="fa fa-check"></i><b>1.4</b> Two-sample trees</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code><span></span></a>
+<li class="chapter" data-level="2" data-path="contree.html"><a href="contree.html"><i class="fa fa-check"></i><b>2</b> <code>conTree</code></a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code><span></span></a></li>
-<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code><span></span></a></li>
-<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code><span></span></a></li>
-<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code><span></span></a></li>
-<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code><span></span></a></li>
-<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code><span></span></a></li>
-<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code><span></span></a></li>
-<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code><span></span></a></li>
-<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code><span></span></a></li>
-<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code><span></span></a></li>
+<li class="chapter" data-level="2.1" data-path="contree.html"><a href="contree.html#contrast"><i class="fa fa-check"></i><b>2.1</b> <code>contrast()</code></a></li>
+<li class="chapter" data-level="2.2" data-path="contree.html"><a href="contree.html#nodesum"><i class="fa fa-check"></i><b>2.2</b> <code>nodesum()</code></a></li>
+<li class="chapter" data-level="2.3" data-path="contree.html"><a href="contree.html#nodeplots"><i class="fa fa-check"></i><b>2.3</b> <code>nodeplots()</code></a></li>
+<li class="chapter" data-level="2.4" data-path="contree.html"><a href="contree.html#treesum"><i class="fa fa-check"></i><b>2.4</b> <code>treesum()</code></a></li>
+<li class="chapter" data-level="2.5" data-path="contree.html"><a href="contree.html#getnodes"><i class="fa fa-check"></i><b>2.5</b> <code>getnodes()</code></a></li>
+<li class="chapter" data-level="2.6" data-path="contree.html"><a href="contree.html#lofcurve"><i class="fa fa-check"></i><b>2.6</b> <code>lofcurve()</code></a></li>
+<li class="chapter" data-level="2.7" data-path="contree.html"><a href="contree.html#modtrast"><i class="fa fa-check"></i><b>2.7</b> <code>modtrast()</code></a></li>
+<li class="chapter" data-level="2.8" data-path="contree.html"><a href="contree.html#xval"><i class="fa fa-check"></i><b>2.8</b> <code>xval()</code></a></li>
+<li class="chapter" data-level="2.9" data-path="contree.html"><a href="contree.html#predtrast"><i class="fa fa-check"></i><b>2.9</b> <code>predtrast()</code></a></li>
+<li class="chapter" data-level="2.10" data-path="contree.html"><a href="contree.html#ydist"><i class="fa fa-check"></i><b>2.10</b> <code>ydist()</code></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples<span></span></a>
+<li class="chapter" data-level="3" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>3</b> Examples</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation<span></span></a></li>
-<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting<span></span></a></li>
-<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions<span></span></a></li>
-<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees<span></span></a></li>
-<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information<span></span></a></li>
+<li class="chapter" data-level="3.1" data-path="examples.html"><a href="examples.html#conditional-probability-estimation"><i class="fa fa-check"></i><b>3.1</b> Conditional probability estimation</a></li>
+<li class="chapter" data-level="3.2" data-path="examples.html"><a href="examples.html#contrast-boosting-1"><i class="fa fa-check"></i><b>3.2</b> Contrast boosting</a></li>
+<li class="chapter" data-level="3.3" data-path="examples.html"><a href="examples.html#conditional-distributions"><i class="fa fa-check"></i><b>3.3</b> Conditional distributions</a></li>
+<li class="chapter" data-level="3.4" data-path="examples.html"><a href="examples.html#two-sample-contrast-trees"><i class="fa fa-check"></i><b>3.4</b> Two sample contrast trees</a></li>
+<li class="chapter" data-level="3.5" data-path="examples.html"><a href="examples.html#session-information"><i class="fa fa-check"></i><b>3.5</b> Session Information</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment<span></span></a></li>
-<li><a href="references.html#references">References<span></span></a></li>
+<li class="chapter" data-level="4" data-path="acknowledgment.html"><a href="acknowledgment.html"><i class="fa fa-check"></i><b>4</b> Acknowledgment</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -280,7 +284,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
